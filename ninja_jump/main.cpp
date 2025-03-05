@@ -8,6 +8,7 @@ const int WINDOW_HEIGHT = 600;
 const int WALL_WIDTH = 100;
 const int NINJA_SIZE = 50;
 const float JUMP_DURATION = 0.3;
+const float INTRO_DURATION = 0.5;
 
 int main(int argc,char* argv[]) {
 
@@ -33,6 +34,8 @@ int main(int argc,char* argv[]) {
     int ninjaY = WINDOW_HEIGHT - NINJA_SIZE;
     bool onTheLeft = true;
     bool jumping = false;
+    bool isIntro = true;
+    float introProgress = 0.0;
     float jumpProgress = 0.0; 
     Uint32 lastTime = SDL_GetTicks(); //lay thoi gian trc khung hinh
 
@@ -50,6 +53,20 @@ int main(int argc,char* argv[]) {
                 jumpProgress = 0.0;
             }
         }
+
+        //intro ninja chay 
+        if (isIntro) {
+            introProgress += deltaTime / INTRO_DURATION;
+            int distance = 150;
+            ninjaY = (WINDOW_HEIGHT - NINJA_SIZE) - introProgress * distance;
+            if (introProgress >= 1) {
+                isIntro = false;
+                ninjaY = 400;
+            }
+        }
+
+
+        //ninja nhay tu ben nay sang ben khac
         if (jumping) {
             jumpProgress += deltaTime / JUMP_DURATION; 
             int distance = WINDOW_WIDTH - 2 * WALL_WIDTH - NINJA_SIZE;
