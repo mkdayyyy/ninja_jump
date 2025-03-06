@@ -7,8 +7,9 @@ const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 const int WALL_WIDTH = 100;
 const int NINJA_SIZE = 50;
-const float JUMP_DURATION = 0.3;
+const float JUMP_DURATION = 0.15;
 const float INTRO_DURATION = 0.5;
+const std::string WINDOW_TITLE = "Ninja Jump";
 
 int main(int argc,char* argv[]) {
 
@@ -19,7 +20,7 @@ int main(int argc,char* argv[]) {
     }
 
     //Khoi tao window
-    SDL_Window* window = SDL_CreateWindow("Ninja Jump", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+    SDL_Window* window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window) {
         printf("Khong khoi tao dc window: %s\n", SDL_GetError());
         return 1;
@@ -111,6 +112,7 @@ int main(int argc,char* argv[]) {
 
     }
     
+    //close SDL
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
