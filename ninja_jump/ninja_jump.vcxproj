@@ -132,7 +132,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="commonFunc.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ninja.cpp" />
+    <ClCompile Include="obstacle.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="commonFunc.h" />
+    <ClInclude Include="ninja.h" />
+    <ClInclude Include="obstacle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
