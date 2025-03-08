@@ -26,3 +26,17 @@ SDL_Renderer* createRenderer(SDL_Window* window) {
     }
     return renderer;
 }
+
+void limitFPS(Uint32 currentTime) {
+    Uint32 frameEnd = SDL_GetTicks();
+    Uint32 frameDuration = frameEnd - currentTime;
+    if (frameDuration < FRAME_TIME) {
+        SDL_Delay(FRAME_TIME - frameDuration);
+    }
+}
+
+void destroySDL() {
+    if(renderer) SDL_DestroyRenderer(renderer);
+    if(window) SDL_DestroyWindow(window);
+    SDL_Quit();
+}
