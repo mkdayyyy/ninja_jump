@@ -18,10 +18,11 @@ public:
 	static void obsRun(float deltaTime,int& score);
 
 	//lay danh sach vat can
-	static const std::vector<obstacle>& getObstacles();
+	static std::vector<obstacle>& getObstacles();
 
-	static const float SPEED; //speed cua vat can (pixel/s)
+	static float SPEED; //speed cua vat can (pixel/s)
 	static const int OBSTACLE_SIZE; // size cua vat can
+
 private:
 	int x;
 	float y;

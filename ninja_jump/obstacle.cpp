@@ -1,7 +1,7 @@
 ﻿#include "obstacle.h"
 
 const int obstacle::OBSTACLE_SIZE = 40;
-const float obstacle::SPEED = 200.0;
+float obstacle::SPEED = 200.0;
 std::vector<obstacle> obstacle::obstacles;
 float obstacle::spawnTime = 0.0;
 
@@ -31,11 +31,15 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 }
 
 void obstacle::obsRun(float deltaTime,int& score) {
+	SPEED = 200 + score*5; //them do kho cho game
+	//OBSTACLE_SPAWN_TIME = std::max(0.5, 2.0 - (float)(score / 5));
+
+	//cap nhat vi tri obs ,score
 	for (auto it = obstacles.begin(); it != obstacles.end();) { // it != obs.end vì đây ko phải index (index là obs.size())
 		it->update(deltaTime);
 		if (it->getY() > WINDOW_HEIGHT) {
 			it = obstacles.erase(it);
-			score++;
+			score+=1;
 		}
 		else {
 			it++;
@@ -43,6 +47,6 @@ void obstacle::obsRun(float deltaTime,int& score) {
 	}
 }
 
-const std::vector<obstacle>& obstacle::getObstacles() {
+std::vector<obstacle>& obstacle::getObstacles() {
 	return obstacles;
 }

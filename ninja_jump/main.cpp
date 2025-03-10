@@ -30,50 +30,94 @@ int main(int argc, char* argv[]) {
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_QUIT) { running = false; }
-            ninja.handleInput(e, jumping);
-        }
 
-        ninja.update(deltaTime, jumping); //khoi chay intro va jumping
-
-        //tao vat can
-        obstacle::spawnObs(deltaTime,ninja.getOnTheLeft());
-        obstacle::obsRun(deltaTime,score);
-
-        //kiem tra va cham giua ninja va obs
-        SDL_Rect ninjaRect = ninja.getRect();
-        for (const auto& obs : obstacle::getObstacles()) { // &obs de chinh sua vao obs cua obstacles chu ko phai tao 1 ban sao
-            SDL_Rect obsRect = obs.getRect();
-            if (SDL_HasIntersection(&ninjaRect, &obsRect)) {
-                running = false;
+            if(state==PLAYING) {
+                ninja.handleInput(e, jumping);
             }
         }
+            
+        if(state==PLAYING) {
+            //khoi chay intro va jumping
+            ninja.update(deltaTime, jumping);
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
+            //tao vat can
+            obstacle::spawnObs(deltaTime, ninja.getOnTheLeft());
+            obstacle::obsRun(deltaTime, score);
 
-        //ve tuong xam, sau nay chen anh
-        SDL_SetRenderDrawColor(renderer, 105, 105, 105, 255);
-        SDL_Rect leftWall = { 0, 0, WALL_WIDTH, WINDOW_HEIGHT };
-        SDL_Rect rightWall = { WINDOW_WIDTH - WALL_WIDTH, 0, WALL_WIDTH, WINDOW_HEIGHT };
-        SDL_RenderFillRect(renderer, &leftWall);
-        SDL_RenderFillRect(renderer, &rightWall);
+            //kiem tra va cham giua ninja va obs
+            SDL_Rect ninjaRect = ninja.getRect();
+            for (const auto& obs : obstacle::getObstacles()) { // &obs de chinh sua vao obs cua obstacles chu ko phai tao 1 ban sao
+                SDL_Rect obsRect = obs.getRect();
+                if (SDL_HasIntersection(&ninjaRect, &obsRect)) {
+                    state = GAME_OVER;
+                    //running = false;
+                }
+            }
 
-        //ve ninja, sau nay chen anh
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_RenderFillRect(renderer, &ninjaRect);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderClear(renderer);
 
-        //ve obstacle
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        for (auto& obs : obstacle::getObstacles()) {
-            SDL_Rect obsRect = obs.getRect();
-            SDL_RenderFillRect(renderer, &obsRect);
+            //ve tuong xam, sau nay chen anh
+            SDL_SetRenderDrawColor(renderer, 105, 105, 105, 255);
+            SDL_Rect leftWall = { 0, 0, WALL_WIDTH, WINDOW_HEIGHT };
+            SDL_Rect rightWall = { WINDOW_WIDTH - WALL_WIDTH, 0, WALL_WIDTH, WINDOW_HEIGHT };
+            SDL_RenderFillRect(renderer, &leftWall);
+            SDL_RenderFillRect(renderer, &rightWall);
+
+            //ve ninja, sau nay chen anh
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+            SDL_RenderFillRect(renderer, &ninjaRect);
+
+            //ve obstacle
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+            for (auto& obs : obstacle::getObstacles()) {
+                SDL_Rect obsRect = obs.getRect();
+                SDL_RenderFillRect(renderer, &obsRect);
+            }
+
+            //in bang diem
+            std::string scoreText = "Score: " + std::to_string(score);
+            renderText(renderer, scoreText, 180, 20,true);
+
+            SDL_RenderPresent(renderer);
         }
 
-        //in bang diem
-        std::string scoreText = "Score: " + std::to_string(score);
-        renderText(renderer, scoreText, 100, 20); 
+        while (state == GAME_OVER) {
+            SDL_Event e;
+            while (SDL_PollEvent(&e)) {
+                if (e.type == SDL_QUIT) {
+                    running = false;
+                    return 0; // Thoát game hoàn toàn
+                }
+                if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r) {
+                    // Reset game
+                    printf("Restarting game...\n"); // check xem game co restart khong
 
-        SDL_RenderPresent(renderer);
+                    score = 0;
+                    obstacle::SPEED = 200.0;
+                    state = PLAYING;
+                    ninja = { WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE };
+                    obstacle::getObstacles().clear();
+                    jumping = false;
+                    lastTime = SDL_GetTicks();// tranh xung dot thoi gian, vat can sinh ra trc khi restart
+                    SDL_Delay(100); //tranh xung dot
+
+                    break; // thoat vong lap gameover de tiep tuc choi
+                }
+            }
+
+            //hien thi man hinh gameover
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderClear(renderer);
+
+            std::string restartText = "Game Over! Press R to Restart";
+            renderText(renderer,restartText , 30, 250,true);
+
+            std::string scoreText = "Score: " + std::to_string(score);
+            renderText(renderer, scoreText, 200, 300,true);
+
+            SDL_RenderPresent(renderer);
+        }
         
         limitFPS(currentTime);
     }

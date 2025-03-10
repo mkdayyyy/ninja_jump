@@ -50,13 +50,18 @@ void destroySDL() {
     SDL_Quit();
 }
 
-void renderText(SDL_Renderer* renderer, std::string& text, int x, int y) {
+void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool centerX) {
     SDL_Color textColor = { 255,255,255,255 };
     SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), textColor);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-    SDL_Rect rect = { x,y,surface->w,surface->h };
-    SDL_RenderCopy(renderer, texture, NULL, &rect);
+    SDL_Rect textRect = { x,y,surface->w,surface->h };
+
+    if (centerX) {
+        textRect.x = (WINDOW_WIDTH - surface->w) / 2; //can giua
+    }
+
+    SDL_RenderCopy(renderer, texture, NULL, &textRect);
 
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
