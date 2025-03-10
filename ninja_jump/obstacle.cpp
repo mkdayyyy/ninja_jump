@@ -1,4 +1,4 @@
-#include "obstacle.h"
+﻿#include "obstacle.h"
 
 const int obstacle::OBSTACLE_SIZE = 40;
 const float obstacle::SPEED = 200.0;
@@ -21,20 +21,21 @@ int obstacle::getY() const{
 	return static_cast<int>(y);
 }
 
-void obstacle::spawnObs(float deltaTime) {
+void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 	spawnTime += deltaTime;
 	if (spawnTime >= OBSTACLE_SPAWN_TIME) {
-		int randomX = WALL_WIDTH + std::rand() % (WINDOW_WIDTH - 2 * WALL_WIDTH - obstacle::OBSTACLE_SIZE);
+		int randomX = onTheLeft ? WALL_WIDTH : WINDOW_WIDTH - WALL_WIDTH - obstacle::OBSTACLE_SIZE;
 		obstacles.push_back(obstacle(randomX, -obstacle::OBSTACLE_SIZE));
 		spawnTime = 0.0;
 	}
 }
 
-void obstacle::obsRun(float deltaTime) {
-	for (auto it = obstacles.begin(); it != obstacles.end();) {
+void obstacle::obsRun(float deltaTime,int& score) {
+	for (auto it = obstacles.begin(); it != obstacles.end();) { // it != obs.end vì đây ko phải index (index là obs.size())
 		it->update(deltaTime);
 		if (it->getY() > WINDOW_HEIGHT) {
 			it = obstacles.erase(it);
+			score++;
 		}
 		else {
 			it++;

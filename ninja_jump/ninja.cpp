@@ -51,3 +51,7 @@ void ninja::updateJump(float deltaTime, bool& jumping) {
 SDL_Rect ninja::getRect() const {
 	return { x, y, NINJA_SIZE, NINJA_SIZE };
 }
+
+bool ninja::getOnTheLeft() const {
+	return onTheLeft;
+}

@@ -14,8 +14,8 @@ public:
 	int getY() const; // lay vi tri y cua vat can
 
 	//quan li vat can (dùng stactic vì mấy hàm này ko liên qua đến class obs mà là quản lí các obs )
-	static void spawnObs(float deltaTime);
-	static void obsRun(float deltaTime);
+	static void spawnObs(float deltaTime,bool onTheLeft);
+	static void obsRun(float deltaTime,int& score);
 
 	//lay danh sach vat can
 	static const std::vector<obstacle>& getObstacles();

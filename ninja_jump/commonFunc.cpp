@@ -2,7 +2,16 @@
 
 void initSDL() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("Khong khoi tao dc sdl: %s\n", SDL_GetError());
+        printf("Khong khoi tao dc SDL: %s\n", SDL_GetError());
+        exit(1);
+    }
+    if (TTF_Init() < 0) {
+        printf("Khong khoi tao dc SDL_ttf: %s\n", TTF_GetError());
+        exit(1);
+    }
+    font = TTF_OpenFont("res/AzeretMono-Medium.ttf", 24);
+    if (!font) {
+        printf("Khong tai dc font: %s\n", TTF_GetError());
         exit(1);
     }
 }
@@ -39,4 +48,17 @@ void destroySDL() {
     if(renderer) SDL_DestroyRenderer(renderer);
     if(window) SDL_DestroyWindow(window);
     SDL_Quit();
+}
+
+void renderText(SDL_Renderer* renderer, std::string& text, int x, int y) {
+    SDL_Color textColor = { 255,255,255,255 };
+    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), textColor);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    SDL_Rect rect = { x,y,surface->w,surface->h };
+    SDL_RenderCopy(renderer, texture, NULL, &rect);
+
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+
 }

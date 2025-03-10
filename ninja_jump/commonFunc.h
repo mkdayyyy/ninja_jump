@@ -9,9 +9,12 @@
 #include <SDL_ttf.h>
 #include <vector>
 #include <ctime>
+#include <string>
 
-static SDL_Window* window = NULL;
+
+static SDL_Window* window = NULL; 
 static SDL_Renderer* renderer = NULL;
+static TTF_Font* font = NULL; //them font cho van ban
 
 const int WINDOW_WIDTH = 500;
 const int WINDOW_HEIGHT = 600;
@@ -23,10 +26,10 @@ const float OBSTACLE_SPAWN_TIME = 2;
 const Uint32 TARGET_FPS = 144; 
 const Uint32 FRAME_TIME = 1000 / TARGET_FPS;
 
-void initSDL();
-SDL_Window* createWindow();
-SDL_Renderer* createRenderer(SDL_Window* window);
+void initSDL(); //kiem tra init
+SDL_Window* createWindow(); //kiem tra tao window
+SDL_Renderer* createRenderer(SDL_Window* window); //kiem tra tao renderer
 void limitFPS(Uint32 currentTime); //gioi han fps
-
-void destroySDL();
+void destroySDL(); //giai phong bo nho, sdl
+void renderText(SDL_Renderer* renderer, std::string& text, int x, int y);
 #endif

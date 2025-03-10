@@ -133,12 +133,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="commonFunc.cpp" />
+    <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ninja.cpp" />
     <ClCompile Include="obstacle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonFunc.h" />
+    <ClInclude Include="LTexture.h" />
     <ClInclude Include="ninja.h" />
     <ClInclude Include="obstacle.h" />
   </ItemGroup>

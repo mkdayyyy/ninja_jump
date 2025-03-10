@@ -8,6 +8,7 @@ public:
 	void update(float deltaTime, bool& jumping);
 	SDL_Rect getRect() const;
 	void handleInput(SDL_Event& e, bool& jumping);
+	bool getOnTheLeft() const;
 private:
 	int x, y;
 	bool onTheLeft;

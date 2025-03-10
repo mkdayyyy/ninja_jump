@@ -11,6 +11,11 @@ int main(int argc, char* argv[]) {
     //quan li game
     bool running = true;
     bool jumping = false;
+    int score = 0;
+
+    //quan li trang thai game
+    enum GameState { PLAYING, GAME_OVER };
+    GameState state = PLAYING;
 
     ninja ninja(WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE);// khoi tao ninja 
     std::srand(static_cast<unsigned>(std::time(nullptr)));
@@ -31,8 +36,8 @@ int main(int argc, char* argv[]) {
         ninja.update(deltaTime, jumping); //khoi chay intro va jumping
 
         //tao vat can
-        obstacle::spawnObs(deltaTime);
-        obstacle::obsRun(deltaTime);
+        obstacle::spawnObs(deltaTime,ninja.getOnTheLeft());
+        obstacle::obsRun(deltaTime,score);
 
         //kiem tra va cham giua ninja va obs
         SDL_Rect ninjaRect = ninja.getRect();
@@ -63,6 +68,10 @@ int main(int argc, char* argv[]) {
             SDL_Rect obsRect = obs.getRect();
             SDL_RenderFillRect(renderer, &obsRect);
         }
+
+        //in bang diem
+        std::string scoreText = "Score: " + std::to_string(score);
+        renderText(renderer, scoreText, 100, 20); 
 
         SDL_RenderPresent(renderer);
         
