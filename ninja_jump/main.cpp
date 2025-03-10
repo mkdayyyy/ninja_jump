@@ -50,7 +50,6 @@ int main(int argc, char* argv[]) {
                 SDL_Rect obsRect = obs.getRect();
                 if (SDL_HasIntersection(&ninjaRect, &obsRect)) {
                     state = GAME_OVER;
-                    //running = false;
                 }
             }
 
