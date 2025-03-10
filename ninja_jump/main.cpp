@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
             while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_QUIT) {
                     running = false;
-                    return 0; // Thoát game hoàn toàn
+                    return 0; // Thoat game hoan toan
                 }
                 if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r) {
                     // Reset game

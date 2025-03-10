@@ -9,7 +9,7 @@ void initSDL() {
         printf("Khong khoi tao dc SDL_ttf: %s\n", TTF_GetError());
         exit(1);
     }
-    font = TTF_OpenFont("res/AzeretMono-Medium.ttf", 24);
+    font = TTF_OpenFont("res/font/AzeretMono-Medium.ttf", 24);
     if (!font) {
         printf("Khong tai dc font: %s\n", TTF_GetError());
         exit(1);
