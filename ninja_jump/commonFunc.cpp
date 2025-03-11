@@ -1,4 +1,10 @@
-#include "commonFunc.h"
+﻿#include "commonFunc.h"
+
+Mix_Chunk* jumpSound = NULL;
+Mix_Chunk* hitSound = NULL;
+Mix_Chunk* gameOverSound = NULL;
+Mix_Chunk* fallSound = NULL;
+Mix_Music* backgroundMusic = NULL;
 
 void initSDL() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -15,24 +21,24 @@ void initSDL() {
         printf("Khong tai dc font: %s\n", TTF_GetError());
         exit(1);
     }
-
-    //load am thanh
+    //khoi tao am thanh
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        printf("Khong khooi tao dc SDL_mixer: %s\n", Mix_GetError());
+        printf("Lỗi khởi tạo SDL_mixer: %s\n", Mix_GetError());
         exit(1);
     }
-    fallSound = Mix_LoadWAV("res/sound/fall_1.wav");
-    gameOverSound = Mix_LoadWAV("res/sound/gameover.wav");
-    jumpSound = Mix_LoadWAV("res/sound/jump.wav");
-    hitSound = Mix_LoadWAV("res/sound/hit.wav");
+    
+    // tao duong dan tuyet doi
+    char absolutePath[512];
+    _fullpath(absolutePath, "res/sound/jump.wav", sizeof(absolutePath));
 
-    if (!jumpSound || !fallSound || !gameOverSound|| !hitSound) {
-        printf("Loi load am thanh: %s\n", Mix_GetError());
-        exit(1);
-    }
-    else {
-        printf("load am thanh thanh cong\n");
-    }
+    // Load am thanh
+    jumpSound = Mix_LoadWAV(absolutePath);
+    fallSound = Mix_LoadWAV("res/sound/fall_1.wav");
+    hitSound = Mix_LoadWAV("res/sound/hit.wav");
+    gameOverSound = Mix_LoadWAV("res/sound/gameover.wav");
+    backgroundMusic = Mix_LoadMUS("res/sound/music.ogg");
+
+
 }
 
 SDL_Window* createWindow() {

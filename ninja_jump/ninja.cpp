@@ -9,13 +9,6 @@ void ninja::handleInput(SDL_Event& e, bool& jumping) {
 		jumping = true;
 		jumpProgress = 0.0;
 		Mix_PlayChannel(-1, jumpSound, 0);
-		int result = Mix_PlayChannel(-1, jumpSound, 0); // Phát âm thanh
-		if (result == -1) {
-			printf("Lỗi phát jump.wav: %s\n", Mix_GetError());
-		}
-		else {
-			printf("Phát jump.wav thành công!\n");
-		}
 	}
 }
 

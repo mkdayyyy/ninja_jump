@@ -4,6 +4,7 @@
 
 int main(int argc, char* argv[]) {
     initSDL();
+
     SDL_Window* window = createWindow();
     SDL_Renderer* renderer=createRenderer(window);
 
@@ -11,7 +12,9 @@ int main(int argc, char* argv[]) {
     bool running = true;
     bool jumping = false;
     int score = 0;
-    Mix_Volume(-1, MIX_MAX_VOLUME);
+    Mix_Volume(-1, MIX_MAX_VOLUME/3);
+    Mix_VolumeMusic(MIX_MAX_VOLUME / 10);
+    Mix_PlayMusic(backgroundMusic, -1);
 
     //quan li trang thai game
     enum GameState { PLAYING, GAME_OVER };
@@ -90,9 +93,6 @@ int main(int argc, char* argv[]) {
                     return 0; // Thoat game hoan toan
                 }
                 if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r) {
-                    // Reset game
-                    printf("Restarting game...\n"); // check xem game co restart khong
-
                     score = 0;
                     obstacle::SPEED = 200.0;
                     state = PLAYING;
@@ -101,8 +101,7 @@ int main(int argc, char* argv[]) {
                     jumping = false;
                     lastTime = SDL_GetTicks();// tranh xung dot thoi gian, vat can sinh ra trc khi restart
                     SDL_Delay(100); //tranh xung dot
-                    Mix_PlayChannel(-1, gameOverSound, 0);
-
+                    Mix_PlayChannel(-1, gameOverSound, 0); 
                     break; // thoat vong lap gameover de tiep tuc choi
                 }
             }
