@@ -1,4 +1,4 @@
-#include "ninja.h"
+﻿#include "ninja.h"
 
 ninja::ninja(int x, int y) :x(x), y(y), onTheLeft(true), isIntro(true), introProgress(0.0), jumpProgress(0.0) {
 	//ham khoi tao
@@ -8,6 +8,14 @@ void ninja::handleInput(SDL_Event& e, bool& jumping) {
 	if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE && !jumping) {
 		jumping = true;
 		jumpProgress = 0.0;
+		Mix_PlayChannel(-1, jumpSound, 0);
+		int result = Mix_PlayChannel(-1, jumpSound, 0); // Phát âm thanh
+		if (result == -1) {
+			printf("Lỗi phát jump.wav: %s\n", Mix_GetError());
+		}
+		else {
+			printf("Phát jump.wav thành công!\n");
+		}
 	}
 }
 

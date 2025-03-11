@@ -1,10 +1,11 @@
 #include "commonFunc.h"
 
 void initSDL() {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         printf("Khong khoi tao dc SDL: %s\n", SDL_GetError());
         exit(1);
     }
+    //load font 
     if (TTF_Init() < 0) {
         printf("Khong khoi tao dc SDL_ttf: %s\n", TTF_GetError());
         exit(1);
@@ -14,10 +15,28 @@ void initSDL() {
         printf("Khong tai dc font: %s\n", TTF_GetError());
         exit(1);
     }
+
+    //load am thanh
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        printf("Khong khooi tao dc SDL_mixer: %s\n", Mix_GetError());
+        exit(1);
+    }
+    fallSound = Mix_LoadWAV("res/sound/fall_1.wav");
+    gameOverSound = Mix_LoadWAV("res/sound/gameover.wav");
+    jumpSound = Mix_LoadWAV("res/sound/jump.wav");
+    hitSound = Mix_LoadWAV("res/sound/hit.wav");
+
+    if (!jumpSound || !fallSound || !gameOverSound|| !hitSound) {
+        printf("Loi load am thanh: %s\n", Mix_GetError());
+        exit(1);
+    }
+    else {
+        printf("load am thanh thanh cong\n");
+    }
 }
 
 SDL_Window* createWindow() {
-    SDL_Window* window = SDL_CreateWindow("Ninja Jump", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+    SDL_Window* window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window) {
         printf("Khong khoi tao dc window: %s\n", SDL_GetError());
         exit(1);
@@ -45,6 +64,11 @@ void limitFPS(Uint32 currentTime) {
 }
 
 void destroySDL() {
+    Mix_FreeChunk(jumpSound);
+    Mix_FreeChunk(hitSound);
+    Mix_FreeChunk(gameOverSound);
+    Mix_FreeChunk(fallSound);
+    Mix_CloseAudio();
     if(renderer) SDL_DestroyRenderer(renderer);
     if(window) SDL_DestroyWindow(window);
     SDL_Quit();

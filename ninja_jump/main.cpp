@@ -7,11 +7,11 @@ int main(int argc, char* argv[]) {
     SDL_Window* window = createWindow();
     SDL_Renderer* renderer=createRenderer(window);
 
-
     //quan li game
     bool running = true;
     bool jumping = false;
     int score = 0;
+    Mix_Volume(-1, MIX_MAX_VOLUME);
 
     //quan li trang thai game
     enum GameState { PLAYING, GAME_OVER };
@@ -50,6 +50,7 @@ int main(int argc, char* argv[]) {
                 SDL_Rect obsRect = obs.getRect();
                 if (SDL_HasIntersection(&ninjaRect, &obsRect)) {
                     state = GAME_OVER;
+                    Mix_PlayChannel(-1, fallSound, 0);
                 }
             }
 
@@ -100,6 +101,7 @@ int main(int argc, char* argv[]) {
                     jumping = false;
                     lastTime = SDL_GetTicks();// tranh xung dot thoi gian, vat can sinh ra trc khi restart
                     SDL_Delay(100); //tranh xung dot
+                    Mix_PlayChannel(-1, gameOverSound, 0);
 
                     break; // thoat vong lap gameover de tiep tuc choi
                 }
