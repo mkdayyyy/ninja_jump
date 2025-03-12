@@ -1,6 +1,8 @@
 ﻿#include "commonFunc.h"
 #include "ninja.h"
 #include "obstacle.h"
+#include "button.h"
+#include "LTexture.h"
 
 int main(int argc, char* argv[]) {
     initSDL();
@@ -17,13 +19,45 @@ int main(int argc, char* argv[]) {
     Mix_PlayMusic(backgroundMusic, -1);
 
     //quan li trang thai game
-    enum GameState { PLAYING, GAME_OVER };
-    GameState state = PLAYING;
+    GameState state = MENU;
 
     ninja ninja(WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE);// khoi tao ninja 
     std::srand(static_cast<unsigned>(std::time(nullptr)));
     
     Uint32 lastTime = SDL_GetTicks(); // lay thoi gian trc khi chay
+
+    while (state == MENU) {
+        SDL_Event e;
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) {
+                running = false;
+                return 0;
+            }
+            if (e.type == SDL_MOUSEBUTTONDOWN) {
+                state = handleMenuClick(e.button.x, e.button.y, running);
+            }
+        }
+
+        //in menu
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
+        std::string gameName = "Ninja Jump";
+        renderText(renderer, gameName, 100, 100, true);
+
+        //ve nut play
+        SDL_SetRenderDrawColor(renderer,0, 0, 255, 255);
+        std::string play = "Play";
+        SDL_RenderFillRect(renderer, &playBut.rectBut);
+        renderText(renderer, play, playBut.rectBut.x + 30, playBut.rectBut.y + 15,true);
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        SDL_RenderFillRect(renderer, &quitBut.rectBut);
+        std::string quit = "Quit";
+        renderText(renderer,quit, quitBut.rectBut.x + 30, quitBut.rectBut.y + 15,true);
+
+        SDL_RenderPresent(renderer);
+    }
 
     while (running) {
         Uint32 currentTime = SDL_GetTicks();
@@ -101,7 +135,8 @@ int main(int argc, char* argv[]) {
                     jumping = false;
                     lastTime = SDL_GetTicks();// tranh xung dot thoi gian, vat can sinh ra trc khi restart
                     SDL_Delay(100); //tranh xung dot
-                    Mix_PlayChannel(-1, gameOverSound, 0); 
+                    Mix_PlayChannel(-1, gameOverSound, 0);  
+
                     break; // thoat vong lap gameover de tiep tuc choi
                 }
             }

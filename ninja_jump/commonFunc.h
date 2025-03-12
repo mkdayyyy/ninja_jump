@@ -33,6 +33,9 @@ extern Mix_Chunk* hitSound; // am thanh khi va cham
 extern Mix_Chunk* gameOverSound; // am thanh khi thua game
 extern Mix_Chunk* fallSound; // am thanh khi nga
 extern Mix_Music* backgroundMusic; // am thanh nen
+extern Mix_Chunk* clickSound; // am thanh khi click
+extern Mix_Chunk* landSound; // am thanh khi dap dat
+static enum GameState { MENU, PLAYING, GAME_OVER };
 
 void initSDL(); //kiem tra init
 SDL_Window* createWindow(); //kiem tra tao window

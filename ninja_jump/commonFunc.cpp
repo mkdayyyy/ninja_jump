@@ -4,7 +4,9 @@ Mix_Chunk* jumpSound = NULL;
 Mix_Chunk* hitSound = NULL;
 Mix_Chunk* gameOverSound = NULL;
 Mix_Chunk* fallSound = NULL;
+Mix_Chunk* clickSound = NULL;
 Mix_Music* backgroundMusic = NULL;
+Mix_Chunk* landSound = NULL;
 
 void initSDL() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -28,14 +30,17 @@ void initSDL() {
     }
     
     // tao duong dan tuyet doi
-    char absolutePath[512];
-    _fullpath(absolutePath, "res/sound/jump.wav", sizeof(absolutePath));
+    char absolutePath[512]; _fullpath(absolutePath, "res/sound/jump.wav", sizeof(absolutePath));
 
-    // Load am thanh
+    // Load hieu ung
     jumpSound = Mix_LoadWAV(absolutePath);
     fallSound = Mix_LoadWAV("res/sound/fall_1.wav");
     hitSound = Mix_LoadWAV("res/sound/hit.wav");
     gameOverSound = Mix_LoadWAV("res/sound/gameover.wav");
+    clickSound = Mix_LoadWAV("res/sound/click.wav");
+    landSound = Mix_LoadWAV("res/sound/land.wav");
+
+    //load am nhac
     backgroundMusic = Mix_LoadMUS("res/sound/music.ogg");
 
 
