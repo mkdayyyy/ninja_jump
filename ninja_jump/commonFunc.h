@@ -43,6 +43,6 @@ SDL_Renderer* createRenderer(SDL_Window* window); //kiem tra tao renderer
 void limitFPS(Uint32 currentTime); //gioi han fps
 void destroySDL(); //giai phong bo nho,sdl
 void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool centerX); //in van ban
-bool loadMedia(); // load am thanh
+SDL_Texture* loadTexture(const std::string& file,SDL_Renderer* renderer); //tai hinh anh 
 
 #endif

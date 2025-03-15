@@ -6,9 +6,9 @@
 
 int main(int argc, char* argv[]) {
     initSDL();
-
     SDL_Window* window = createWindow();
     SDL_Renderer* renderer=createRenderer(window);
+    obstacle::loadTextures(renderer); // tai hinh anh obs
 
     //quan li game
     bool running = true;
@@ -42,6 +42,7 @@ int main(int argc, char* argv[]) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
+        //in ten game
         std::string gameName = "Ninja Jump";
         renderText(renderer, gameName, 100, 100, true);
 
@@ -51,6 +52,7 @@ int main(int argc, char* argv[]) {
         SDL_RenderFillRect(renderer, &playBut.rectBut);
         renderText(renderer, play, playBut.rectBut.x + 30, playBut.rectBut.y + 15,true);
 
+        //ve nut quit
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
         SDL_RenderFillRect(renderer, &quitBut.rectBut);
         std::string quit = "Quit";
@@ -86,6 +88,9 @@ int main(int argc, char* argv[]) {
             for (const auto& obs : obstacle::getObstacles()) { // &obs de chinh sua vao obs cua obstacles chu ko phai tao 1 ban sao
                 SDL_Rect obsRect = obs.getRect();
                 if (SDL_HasIntersection(&ninjaRect, &obsRect)) {
+                    if (obs.getType() == obstacleType::ROPE) {
+                        continue;
+                    }
                     state = GAME_OVER;
                     Mix_PlayChannel(-1, fallSound, 0);
                 }
@@ -106,10 +111,13 @@ int main(int argc, char* argv[]) {
             SDL_RenderFillRect(renderer, &ninjaRect);
 
             //ve obstacle
-            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+            /*SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
             for (auto& obs : obstacle::getObstacles()) {
                 SDL_Rect obsRect = obs.getRect();
                 SDL_RenderFillRect(renderer, &obsRect);
+            }*/
+            for (auto& obs : obstacle::getObstacles()) {
+                obs.render(renderer);
             }
 
             //in bang diem

@@ -28,12 +28,9 @@ void initSDL() {
         printf("Lỗi khởi tạo SDL_mixer: %s\n", Mix_GetError());
         exit(1);
     }
-    
-    // tao duong dan tuyet doi
-    char absolutePath[512]; _fullpath(absolutePath, "res/sound/jump.wav", sizeof(absolutePath));
 
-    // Load hieu ung
-    jumpSound = Mix_LoadWAV(absolutePath);
+    //load am thanh hieu ung
+    jumpSound = Mix_LoadWAV("res/sound/jump.wav");
     fallSound = Mix_LoadWAV("res/sound/fall_1.wav");
     hitSound = Mix_LoadWAV("res/sound/hit.wav");
     gameOverSound = Mix_LoadWAV("res/sound/gameover.wav");
@@ -101,4 +98,22 @@ void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool cen
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
 
+}
+
+SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer) {
+    SDL_Texture* newTexture = nullptr;
+    SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+
+    if (loadedSurface == nullptr) {
+        std::cout << "Không thể load hình ảnh " << path << "! SDL_image Error: " << IMG_GetError() << std::endl;
+    }
+    else {
+        newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+        if (newTexture == nullptr) {
+            std::cout << "Không thể tạo texture từ " << path << "! SDL Error: " << SDL_GetError() << std::endl;
+        }
+        SDL_FreeSurface(loadedSurface);
+    }
+
+    return newTexture;
 }
