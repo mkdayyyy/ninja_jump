@@ -11,7 +11,8 @@
 #include <ctime>
 #include <string>
 #include <algorithm>
-
+#include "obstacle.h"
+#include "ninja.h"
 
 static SDL_Window* window = NULL;  // khoi tao window
 static SDL_Renderer* renderer = NULL; //tao renderer
@@ -35,7 +36,8 @@ extern Mix_Chunk* fallSound; // am thanh khi nga
 extern Mix_Music* backgroundMusic; // am thanh nen
 extern Mix_Chunk* clickSound; // am thanh khi click
 extern Mix_Chunk* landSound; // am thanh khi dap dat
-static enum GameState { MENU, PLAYING, GAME_OVER };
+static enum GameState { MENU, PLAYING, GAME_OVER }; // quan li trang thai game
+static bool gameReset = false; // reset game moi khi an vao play
 
 void initSDL(); //kiem tra init
 SDL_Window* createWindow(); //kiem tra tao window
@@ -43,6 +45,6 @@ SDL_Renderer* createRenderer(SDL_Window* window); //kiem tra tao renderer
 void limitFPS(Uint32 currentTime); //gioi han fps
 void destroySDL(); //giai phong bo nho,sdl
 void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool centerX); //in van ban
-SDL_Texture* loadTexture(const std::string& file,SDL_Renderer* renderer); //tai hinh anh 
+SDL_Texture* loadTexture(const std::string& file,SDL_Renderer* renderer); //tai hinh anh
 
 #endif

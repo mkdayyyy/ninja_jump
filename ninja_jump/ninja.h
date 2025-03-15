@@ -11,9 +11,9 @@ public:
 	bool getOnTheLeft() const; // lay bool onTheLeft de su dung
 
 private:
-	int x, y;
-	bool onTheLeft;
-	bool isIntro;
+	int x, y; // toa do cua ninja
+	bool onTheLeft; 
+	bool isIntro; 
 	float introProgress;
 	float jumpProgress;
 

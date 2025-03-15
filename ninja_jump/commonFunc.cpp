@@ -103,17 +103,7 @@ void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool cen
 SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer) {
     SDL_Texture* newTexture = nullptr;
     SDL_Surface* loadedSurface = IMG_Load(path.c_str());
-
-    if (loadedSurface == nullptr) {
-        std::cout << "Không thể load hình ảnh " << path << "! SDL_image Error: " << IMG_GetError() << std::endl;
-    }
-    else {
-        newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
-        if (newTexture == nullptr) {
-            std::cout << "Không thể tạo texture từ " << path << "! SDL Error: " << SDL_GetError() << std::endl;
-        }
-        SDL_FreeSurface(loadedSurface);
-    }
-
+    newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    SDL_FreeSurface(loadedSurface);
     return newTexture;
 }

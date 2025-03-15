@@ -14,15 +14,15 @@ int main(int argc, char* argv[]) {
     bool running = true;
     bool jumping = false;
     int score = 0;
-    Mix_Volume(-1, MIX_MAX_VOLUME/3);
-    Mix_VolumeMusic(MIX_MAX_VOLUME / 10);
-    Mix_PlayMusic(backgroundMusic, -1);
+	Mix_Volume(-1, MIX_MAX_VOLUME / 3); // am thanh hieu ung
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 10); // am thanh nen
+	Mix_PlayMusic(backgroundMusic, -1); // choi nhac nen
 
     //quan li trang thai game
     GameState state = MENU;
 
     ninja ninja(WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE);// khoi tao ninja 
-    std::srand(static_cast<unsigned>(std::time(nullptr)));
+	std::srand(static_cast<unsigned>(std::time(nullptr))); // khoi tao random
     
     Uint32 lastTime = SDL_GetTicks(); // lay thoi gian trc khi chay
 
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        //in menu
+        // in menu
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
@@ -96,6 +96,14 @@ int main(int argc, char* argv[]) {
                 }
             }
 
+			//kiem tra va cham giua ninja va squirrel
+			for (const auto& squirrel : obstacle::getSquirrels()) {
+				SDL_Rect squirrelRect = squirrel.getRect();
+				if (SDL_HasIntersection(&ninjaRect, &squirrelRect)) {
+					state = GAME_OVER;
+					Mix_PlayChannel(-1, fallSound, 0);
+				}
+			}
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
 
@@ -111,15 +119,13 @@ int main(int argc, char* argv[]) {
             SDL_RenderFillRect(renderer, &ninjaRect);
 
             //ve obstacle
-            /*SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-            for (auto& obs : obstacle::getObstacles()) {
-                SDL_Rect obsRect = obs.getRect();
-                SDL_RenderFillRect(renderer, &obsRect);
-            }*/
             for (auto& obs : obstacle::getObstacles()) {
                 obs.render(renderer);
             }
-
+			//ve squirrel
+            for (auto& squirrel : obstacle::getSquirrels()) {
+				squirrel.render(renderer);
+            }
             //in bang diem
             std::string scoreText = "Score: " + std::to_string(score);
             renderText(renderer, scoreText, 180, 20,true);
