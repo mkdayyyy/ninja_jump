@@ -25,8 +25,11 @@ public:
 
 	static float SPEED; //speed cua vat can (pixel/s)
 	static const int OBSTACLE_SIZE; // size cua vat can
+	static bool birdExists; // theo doi bird in ra hay chua
+	static bool squirrelExists; // theo doi squirrel in ra hay chua
 
 	void animate(); // chuyen frame
+
 
 private:
 	int x;
@@ -36,14 +39,14 @@ private:
 	obstacleType type; // loai vat can
 
 	bool movingRight = true; // kiem tra huong cua squirrel 
+	bool birdMovingRight = true;
 
 	float freezeTime = 0.0; // kiem tra bird dung yen dc bao lau
 	bool movingDown = false; // kiem tra huong cua bird
 
 	static std::vector<obstacle> obstacles; // danh sach vat can
 	static std::vector<obstacle> squirrels; // danh sach squirrel
-	static bool birdExists; // theo doi bird in ra hay chua
-	static bool squirrelExists; // theo doi squirrel in ra hay chua
+	
 	
 
 

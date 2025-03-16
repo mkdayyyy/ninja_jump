@@ -23,6 +23,8 @@ obstacle::obstacle(int x, int y,int w,int h, obstacleType type) : x(x), y(static
 	}
 	else if (type == obstacleType::BIRD) {
 		currentTexture = birdTextures[0];
+		freezeTime = 0;
+		movingDown = false;
 	}
 }
 
@@ -40,23 +42,40 @@ void obstacle::update(float deltaTime) {
 				movingRight = true; // doi huong
 			}
 		}
+		y += (SPEED * deltaTime);
 	}
 	else if (type == obstacleType::BIRD) {
-		if (!movingDown) {
-			freezeTime += deltaTime;
-			if (freezeTime >= 5.0) {
-				movingDown = true;
-			}
+		if (x ==WALL_WIDTH) {
+			birdMovingRight = true;
+		}
+		else if(x==WINDOW_WIDTH-WALL_WIDTH-35) {
+			birdMovingRight = false;
+		}
+		if (y <= 150) {
+			y += (SPEED * deltaTime);
 		}
 		else {
-			// di chuyen theo goc 45 do
-			x += 2; 
-			y += 2;
+			if (!movingDown) {
+				freezeTime += deltaTime;
+				if (freezeTime >= 5.0) {
+					movingDown = true;
+				}
+			}
+			else {
+				// di chuyen xuong
+				if (birdMovingRight) { x += 2; }
+				else { x -= 2; }
+				y += 2;
+			}
 		}
+
+
+	}
+	else {
+		y += (SPEED * deltaTime);
 	}
 
-	y += (SPEED * deltaTime);
-	
+		
 }
 
 SDL_Rect obstacle::getRect() const {
@@ -112,7 +131,7 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 			spawnX = (rand() % 2 == 0) ? 100 : (WINDOW_WIDTH - WALL_WIDTH - 35); // random xuat hien trai hoac phai
 			width = 35;
 			height = 33;
-			spawnY = -height;
+			spawnY = 33;
 			birdExists = true;
 			break;
 		}
@@ -200,6 +219,7 @@ void obstacle::freeTextures() {
 
 void obstacle::render(SDL_Renderer* renderer) {
 	SDL_Rect dstRect = { x, y, width, height };
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
 
 	switch (type) {
 	case obstacleType::ROPE:
@@ -215,10 +235,11 @@ void obstacle::render(SDL_Renderer* renderer) {
 		SDL_RenderCopy(renderer, spikeTexture, NULL, &dstRect);
 		break;
 	case obstacleType::BIRD:
-		/*SDL_RenderCopy(renderer, currentTexture, NULL, &dstRect);
-		break;*/
+		flip = birdMovingRight ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+		SDL_RenderCopyEx(renderer, currentTexture, NULL, &dstRect, 0, NULL, flip);
+		break;
 	case obstacleType::SQUIRREL:
-		SDL_RendererFlip flip = movingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+		flip = movingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 		SDL_RenderCopyEx(renderer, currentTexture, NULL, &dstRect, 0, NULL, flip);
 		break;
 	}

@@ -147,6 +147,8 @@ int main(int argc, char* argv[]) {
                     ninja = { WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE };
                     obstacle::getObstacles().clear();
                     obstacle::getSquirrels().clear();
+                    obstacle::birdExists = false;
+                    obstacle::squirrelExists = false;
                     jumping = false;
                     lastTime = SDL_GetTicks();// tranh xung dot thoi gian, vat can sinh ra trc khi restart
                     SDL_Delay(100); //tranh xung dot
