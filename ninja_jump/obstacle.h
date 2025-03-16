@@ -34,8 +34,18 @@ private:
 	int width, height; // chieu rong va chieu cao cua vat can
 	static float spawnTime; // thoi gian spawn vat can
 	obstacleType type; // loai vat can
+
+	bool movingRight = true; // kiem tra huong cua squirrel 
+
+	float freezeTime = 0.0; // kiem tra bird dung yen dc bao lau
+	bool movingDown = false; // kiem tra huong cua bird
+
 	static std::vector<obstacle> obstacles; // danh sach vat can
 	static std::vector<obstacle> squirrels; // danh sach squirrel
+	static bool birdExists; // theo doi bird in ra hay chua
+	static bool squirrelExists; // theo doi squirrel in ra hay chua
+	
+
 
 	static SDL_Texture* ropeTexture; // hinh anh vat can rope
 	static SDL_Texture* leftHouseTexture; // hinh anh vat can left house

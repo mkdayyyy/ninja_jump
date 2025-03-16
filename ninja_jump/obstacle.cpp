@@ -6,6 +6,9 @@ std::vector<obstacle> obstacle::obstacles;
 std::vector<obstacle> obstacle::squirrels;
 float obstacle::spawnTime = 0.0;
 
+bool obstacle::birdExists = false;
+bool obstacle::squirrelExists = false;
+
 SDL_Texture* obstacle::ropeTexture = nullptr;
 SDL_Texture* obstacle::leftHouseTexture = nullptr;
 SDL_Texture* obstacle::rightHouseTexture = nullptr;
@@ -25,8 +28,33 @@ obstacle::obstacle(int x, int y,int w,int h, obstacleType type) : x(x), y(static
 
 void obstacle::update(float deltaTime) {
 	if (type == obstacleType::SQUIRREL) {
-		x += (x < WINDOW_WIDTH / 2) ? 2 : -2; // squirrel di chuyen ngang
+		if (movingRight) {
+			x += 2; // di chuyen sang phai
+			if (x + width >= WINDOW_WIDTH - WALL_WIDTH) {
+				movingRight = false; // doi huong
+			}
+		}
+		else {
+			x -= 2; // di chuyen sang trai
+			if (x <= WALL_WIDTH) {
+				movingRight = true; // doi huong
+			}
+		}
 	}
+	else if (type == obstacleType::BIRD) {
+		if (!movingDown) {
+			freezeTime += deltaTime;
+			if (freezeTime >= 5.0) {
+				movingDown = true;
+			}
+		}
+		else {
+			// di chuyen theo goc 45 do
+			x += 2; 
+			y += 2;
+		}
+	}
+
 	y += (SPEED * deltaTime);
 	
 }
@@ -49,6 +77,7 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 		int spawnX, spawnY,width,height;
 		switch (type) {
 		case obstacleType::ROPE:
+			if (squirrelExists) return;
 			spawnX = 100;
 			spawnY = 74;
 			width = 300;
@@ -79,11 +108,12 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 		//	spawnY = -height;
 		//	break;
 		case obstacleType::BIRD:
+			if (birdExists) return;
 			spawnX = (rand() % 2 == 0) ? 100 : (WINDOW_WIDTH - WALL_WIDTH - 35); // random xuat hien trai hoac phai
-			
 			width = 35;
 			height = 33;
 			spawnY = -height;
+			birdExists = true;
 			break;
 		}
 
@@ -91,8 +121,9 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 		spawnTime = 0.0;
 
 		// Neu la rope thi them squirrel
-		if (type == obstacleType::ROPE) {
+		if (type == obstacleType::ROPE && !squirrelExists) {
 			squirrels.push_back(obstacle(spawnX + 50, -spawnY, 35, 19, obstacleType::SQUIRREL));
+			squirrelExists = true;
 		}
 	}
 }
@@ -107,7 +138,11 @@ void obstacle::obsRun(float deltaTime,int& score) {
 		it->animate(); // chuyen frame
 		if (it->getY() > WINDOW_HEIGHT) {
 			if (it->type == obstacleType::ROPE) {
+				squirrelExists = false;
 				squirrels.clear();
+			}
+			else if (it->type == obstacleType::BIRD) {
+				birdExists = false;
 			}
 			it = obstacles.erase(it);
 			score+=1;
@@ -180,10 +215,11 @@ void obstacle::render(SDL_Renderer* renderer) {
 		SDL_RenderCopy(renderer, spikeTexture, NULL, &dstRect);
 		break;
 	case obstacleType::BIRD:
-		SDL_RenderCopy(renderer, currentTexture, NULL, &dstRect);
-		break;
+		/*SDL_RenderCopy(renderer, currentTexture, NULL, &dstRect);
+		break;*/
 	case obstacleType::SQUIRREL:
-		SDL_RenderCopy(renderer, currentTexture, NULL, &dstRect);
+		SDL_RendererFlip flip = movingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+		SDL_RenderCopyEx(renderer, currentTexture, NULL, &dstRect, 0, NULL, flip);
 		break;
 	}
 }
