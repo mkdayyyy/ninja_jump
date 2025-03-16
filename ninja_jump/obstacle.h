@@ -46,9 +46,6 @@ private:
 
 	static std::vector<obstacle> obstacles; // danh sach vat can
 	static std::vector<obstacle> squirrels; // danh sach squirrel
-	
-	
-
 
 	static SDL_Texture* ropeTexture; // hinh anh vat can rope
 	static SDL_Texture* leftHouseTexture; // hinh anh vat can left house

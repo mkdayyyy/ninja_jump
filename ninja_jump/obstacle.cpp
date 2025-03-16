@@ -116,7 +116,7 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 			break;
 		case obstacleType::SPIKE:
 			spawnX = 100;
-			spawnY = -81;
+			spawnY = -81; // spawnY am tai vi muon xuat hien bat ngo 
 			width = 30;
 			height = 81;
 			break;

@@ -1,5 +1,8 @@
 ﻿#include "ninja.h"
 
+SDL_Texture* ninja::ninjaRunTextures[3] = { nullptr,nullptr,nullptr };
+SDL_Texture* ninja::ninjaJumpTextures[4] = { nullptr,nullptr,nullptr,nullptr };
+
 ninja::ninja(int x, int y) :x(x), y(y), onTheLeft(true), isIntro(true), introProgress(0.0), jumpProgress(0.0) {
 	//ham khoi tao
 }
@@ -55,4 +58,42 @@ SDL_Rect ninja::getRect() const {
 
 bool ninja::getOnTheLeft() const {
 	return onTheLeft;
+}
+
+void ninja::loadTextures(SDL_Renderer* renderer) {
+	// load hinh anh ninja run
+	ninjaRunTextures[0] = loadTexture("res/run/1.png", renderer);
+	ninjaRunTextures[1] = loadTexture("res/run/2.png", renderer);
+	ninjaRunTextures[2] = loadTexture("res/run/3.png", renderer);
+
+	// load hinh anh ninja jump
+	ninjaJumpTextures[0] = loadTexture("res/jump/7.png", renderer);
+	ninjaJumpTextures[1] = loadTexture("res/jump/8.png", renderer);
+	ninjaJumpTextures[2] = loadTexture("res/jump/9.png", renderer);
+	ninjaJumpTextures[3] = loadTexture("res/jump/10.png", renderer);
+}
+
+void ninja::render(SDL_Renderer* renderer, bool jumping) {
+	SDL_Rect dstRect = { x, y, 47, 89 };
+	SDL_RendererFlip flip = onTheLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+	if (jumping) {
+		SDL_RenderCopyEx(renderer, ninjaJumpTextures[frameIndex], NULL, &dstRect, 0, NULL, flip);
+	}
+	else {
+		SDL_RenderCopyEx(renderer, ninjaRunTextures[frameIndex], NULL, &dstRect, 0, NULL, flip);
+	}
+}
+
+void ninja::animate(bool jumping) {
+	static int count = 0;
+	count++;
+	if (count > animationSpeed) {
+		if (jumping) {
+			frameIndex = (frameIndex + 1) % 4; // 4 frames cho nhảy
+		}
+		else {
+			frameIndex = (frameIndex + 1) % 3; // 3 frames cho chạy
+		}
+		count = 0;
+	}
 }

@@ -9,6 +9,7 @@ int main(int argc, char* argv[]) {
     SDL_Window* window = createWindow();
     SDL_Renderer* renderer=createRenderer(window);
     obstacle::loadTextures(renderer); // tai hinh anh obs
+    ninja::loadTextures(renderer); // tai hinh anh ninja
 
     //quan li game
     bool running = true;
@@ -78,6 +79,7 @@ int main(int argc, char* argv[]) {
         if(state==PLAYING) {
             //khoi chay intro va jumping
             ninja.update(deltaTime, jumping);
+            ninja.animate(jumping);
 
             //tao vat can
             obstacle::spawnObs(deltaTime, ninja.getOnTheLeft());
@@ -115,8 +117,9 @@ int main(int argc, char* argv[]) {
             SDL_RenderFillRect(renderer, &rightWall);
 
             //ve ninja, sau nay chen anh
-            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-            SDL_RenderFillRect(renderer, &ninjaRect);
+            /*SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+            SDL_RenderFillRect(renderer, &ninjaRect);*/
+            ninja.render(renderer, jumping);
 
             //ve obstacle
             for (auto& obs : obstacle::getObstacles()) {
@@ -174,6 +177,7 @@ int main(int argc, char* argv[]) {
         limitFPS(currentTime);
     }
 
+    obstacle::freeTextures();
     destroySDL();
     return 0;
 }
