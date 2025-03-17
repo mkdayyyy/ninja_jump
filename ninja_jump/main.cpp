@@ -10,6 +10,7 @@ int main(int argc, char* argv[]) {
     SDL_Renderer* renderer=createRenderer(window);
     obstacle::loadTextures(renderer); // tai hinh anh obs
     ninja::loadTextures(renderer); // tai hinh anh ninja
+    loadCommonTexture(renderer); // tai hinh anh nen
 
     //quan li game
     bool running = true;
@@ -43,9 +44,9 @@ int main(int argc, char* argv[]) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
-        //in ten game
-        std::string gameName = "Ninja Jump";
-        renderText(renderer, gameName, 100, 100, true);
+        //in background menu
+        SDL_Rect dstRect = { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT };
+        SDL_RenderCopy(renderer, menuTexture, NULL, &dstRect);
 
         //ve nut play
         SDL_SetRenderDrawColor(renderer,0, 0, 255, 255);
@@ -58,6 +59,8 @@ int main(int argc, char* argv[]) {
         SDL_RenderFillRect(renderer, &quitBut.rectBut);
         std::string quit = "Quit";
         renderText(renderer,quit, quitBut.rectBut.x + 30, quitBut.rectBut.y + 15,true);
+
+        
 
         SDL_RenderPresent(renderer);
     }
@@ -109,12 +112,9 @@ int main(int argc, char* argv[]) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
 
-            //ve tuong xam, sau nay chen anh
-            SDL_SetRenderDrawColor(renderer, 105, 105, 105, 255);
-            SDL_Rect leftWall = { 0, 0, WALL_WIDTH, WINDOW_HEIGHT };
-            SDL_Rect rightWall = { WINDOW_WIDTH - WALL_WIDTH, 0, WALL_WIDTH, WINDOW_HEIGHT };
-            SDL_RenderFillRect(renderer, &leftWall);
-            SDL_RenderFillRect(renderer, &rightWall);
+            // ve ingame back
+            SDL_Rect dstRect = { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT };
+            SDL_RenderCopy(renderer, ingameTexture, &dstRect, NULL);
 
             //ve ninja, sau nay chen anh
             /*SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);

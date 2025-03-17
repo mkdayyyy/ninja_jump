@@ -16,13 +16,14 @@ public:
 
 private:
 	int x, y; // toa do cua ninja
+	//int width, height; // chieu rong va chieu dai cua ninja
 	bool onTheLeft; 
 	bool isIntro; 
 	float introProgress;
 	float jumpProgress;
 
 	int frameIndex = 0;
-	int animationSpeed = 6;
+	int animationSpeed = 10;
 	void updateIntro(float deltaTime); //chay intro
 	void updateJump(float deltaTime, bool& jumping); // ninja nhay
 	static SDL_Texture* ninjaRunTextures[3]; // danh sach frame ninja khi chay

@@ -19,11 +19,11 @@ static SDL_Renderer* renderer = NULL; //tao renderer
 static TTF_Font* font = NULL; //them font cho van ban
 
 //cac bien global
-const int WINDOW_WIDTH = 500; // chieu dai cua window
+const int WINDOW_WIDTH = 480; // chieu dai cua window
 const int WINDOW_HEIGHT = 600; // chieu cao cua windo
-const int WALL_WIDTH = 100; // chieu dai cua tuong
+const int WALL_WIDTH = 46; // chieu dai cua tuong
 const std::string WINDOW_TITLE = "Ninja Jump"; //tieu de cua window
-const int NINJA_SIZE = 50; //kich thuoc cua ninja
+const int NINJA_SIZE = 30; //kich thuoc cua ninja
 const float JUMP_DURATION = 0.3; // thoi gian 1 lan ninja nhay
 const float INTRO_DURATION = 0.5; // thoi gian intro 
 static float OBSTACLE_SPAWN_TIME = 2; // thoi gian obs spawn 
@@ -38,6 +38,10 @@ extern Mix_Chunk* clickSound; // am thanh khi click
 extern Mix_Chunk* landSound; // am thanh khi dap dat
 static enum GameState { MENU, PLAYING, GAME_OVER }; // quan li trang thai game
 static bool gameReset = false; // reset game moi khi an vao play
+extern SDL_Texture* menuTexture; // hinh anh menu background
+extern SDL_Texture* ingameTexture; // hinh anh background khi chay game
+
+
 
 void initSDL(); //kiem tra init
 SDL_Window* createWindow(); //kiem tra tao window
@@ -46,5 +50,7 @@ void limitFPS(Uint32 currentTime); //gioi han fps
 void destroySDL(); //giai phong bo nho,sdl
 void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool centerX); //in van ban
 SDL_Texture* loadTexture(const std::string& file,SDL_Renderer* renderer); //tai hinh anh
+void loadCommonTexture(SDL_Renderer* renderer);
+//void renderText(SDL_Renderer* renderer);
 
 #endif

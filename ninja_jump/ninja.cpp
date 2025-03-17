@@ -22,6 +22,7 @@ void ninja::update(float deltaTime, bool& jumping) {
 	if (jumping) {
 		updateJump(deltaTime, jumping);
 	}
+	animate(jumping);
 }
 
 void ninja::updateIntro(float deltaTime) {
@@ -67,19 +68,21 @@ void ninja::loadTextures(SDL_Renderer* renderer) {
 	ninjaRunTextures[2] = loadTexture("res/run/3.png", renderer);
 
 	// load hinh anh ninja jump
-	ninjaJumpTextures[0] = loadTexture("res/jump/7.png", renderer);
-	ninjaJumpTextures[1] = loadTexture("res/jump/8.png", renderer);
-	ninjaJumpTextures[2] = loadTexture("res/jump/9.png", renderer);
-	ninjaJumpTextures[3] = loadTexture("res/jump/10.png", renderer);
+	ninjaJumpTextures[0] = loadTexture("res/run/7.png", renderer);
+	ninjaJumpTextures[1] = loadTexture("res/run/8.png", renderer);
+	ninjaJumpTextures[2] = loadTexture("res/run/9.png", renderer);
+	ninjaJumpTextures[3] = loadTexture("res/run/10.png", renderer);
 }
 
 void ninja::render(SDL_Renderer* renderer, bool jumping) {
-	SDL_Rect dstRect = { x, y, 47, 89 };
+	SDL_Rect dstRect;
 	SDL_RendererFlip flip = onTheLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 	if (jumping) {
+		dstRect = { x,y,88,62 };
 		SDL_RenderCopyEx(renderer, ninjaJumpTextures[frameIndex], NULL, &dstRect, 0, NULL, flip);
 	}
 	else {
+		dstRect = { x, y, 30, 60 };
 		SDL_RenderCopyEx(renderer, ninjaRunTextures[frameIndex], NULL, &dstRect, 0, NULL, flip);
 	}
 }

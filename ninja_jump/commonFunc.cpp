@@ -8,6 +8,9 @@ Mix_Chunk* clickSound = NULL;
 Mix_Music* backgroundMusic = NULL;
 Mix_Chunk* landSound = NULL;
 
+SDL_Texture* menuTexture = nullptr;
+SDL_Texture* ingameTexture = nullptr;
+
 void initSDL() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         printf("Khong khoi tao dc SDL: %s\n", SDL_GetError());
@@ -103,7 +106,23 @@ void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool cen
 SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer) {
     SDL_Texture* newTexture = nullptr;
     SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+    if (!loadedSurface) {
+        printf("IMG_Load failed for %s: %s\n", path.c_str(), IMG_GetError());
+        return nullptr;
+    }
+
     newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    if (!newTexture) {
+        printf("SDL_CreateTextureFromSurface failed for %s: %s\n", path.c_str(), SDL_GetError());
+    }
     SDL_FreeSurface(loadedSurface);
     return newTexture;
+}
+
+void loadCommonTexture(SDL_Renderer* renderer) {
+    menuTexture = loadTexture("res/menu/back.png", renderer);
+    ingameTexture = loadTexture("res/background/back1.png", renderer);
+    if (!menuTexture) {
+        printf("Failed to load menu texture: %s\n", SDL_GetError());
+    }
 }

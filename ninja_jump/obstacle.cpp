@@ -51,7 +51,7 @@ void obstacle::update(float deltaTime) {
 		else if(x==WINDOW_WIDTH-WALL_WIDTH-35) {
 			birdMovingRight = false;
 		}
-		if (y <= 150) {
+		if (y <= 180) {
 			y += (SPEED * deltaTime);
 		}
 		else {
@@ -63,8 +63,8 @@ void obstacle::update(float deltaTime) {
 			}
 			else {
 				// di chuyen xuong
-				if (birdMovingRight) { x += 2; }
-				else { x -= 2; }
+				if (birdMovingRight) { x += 3; }
+				else { x -= 3; }
 				y += 2;
 			}
 		}
@@ -97,25 +97,25 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 		switch (type) {
 		case obstacleType::ROPE:
 			if (squirrelExists) return;
-			spawnX = 100;
+			spawnX = WALL_WIDTH;
 			spawnY = 74;
-			width = 300;
+			width = 388;
 			height = 74;
 			break;
 		case obstacleType::LEFTHOUSE:
-			spawnX = 100;
+			spawnX = WALL_WIDTH;
 			spawnY = 43;
 			width = 50;
 			height = 43;
 			break;
 		case obstacleType::RIGHTHOUSE:
-			spawnX = WINDOW_WIDTH-WALL_WIDTH-70;
+			spawnX = WINDOW_WIDTH-WALL_WIDTH-50;
 			spawnY = 31;
 			width = 70;
 			height = 31;
 			break;
 		case obstacleType::SPIKE:
-			spawnX = 100;
+			spawnX = WALL_WIDTH;
 			spawnY = -81; // spawnY am tai vi muon xuat hien bat ngo 
 			width = 30;
 			height = 81;
@@ -128,7 +128,7 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 		//	break;
 		case obstacleType::BIRD:
 			if (birdExists) return;
-			spawnX = (rand() % 2 == 0) ? 100 : (WINDOW_WIDTH - WALL_WIDTH - 35); // random xuat hien trai hoac phai
+			spawnX = (rand() % 2 == 0) ? WALL_WIDTH : (WINDOW_WIDTH - WALL_WIDTH - 35); // random xuat hien trai hoac phai
 			width = 35;
 			height = 33;
 			spawnY = 33;
