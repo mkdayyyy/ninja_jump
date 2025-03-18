@@ -4,17 +4,18 @@
 #include "button.h"
 #include "LTexture.h"
 
+void loadAllTextures(SDL_Renderer* renderer);
+
 int main(int argc, char* argv[]) {
     initSDL();
     SDL_Window* window = createWindow();
 
     SDL_Renderer* renderer=createRenderer(window);
-    obstacle::loadTextures(renderer); // tai hinh anh obs
-    ninja::loadTextures(renderer); // tai hinh anh ninja
-    loadCommonTexture(renderer); // tai hinh anh nen
+    loadAllTextures(renderer);
     button playButton(WINDOW_WIDTH / 2 - 50, 250, 100, 50, "res/button/but_play.png", renderer);
     button exitButton(WINDOW_WIDTH / 2 - 50, 320, 100, 50, "res/button/but_exit.png", renderer);
     button tryAgainButton(175, 270, 130, 50, "res/button/but_try.png", renderer);
+    button menuButton(175, 340, 130, 50, "res/button/but_menu.png", renderer);
 
     //quan li game
     bool running = true;
@@ -43,9 +44,11 @@ int main(int argc, char* argv[]) {
                 int mouseX = e.button.x;
                 int mouseY = e.button.y;
                 if (playButton.isClicked(mouseX, mouseY)) {
+                    Mix_PlayChannel(-1, clickSound, 0);
                     state = PLAYING;
                 }
                 else if (exitButton.isClicked(mouseX, mouseY)) {
+                    Mix_PlayChannel(-1, clickSound, 0);
                     running = false;
                     return 0;
                 }
@@ -86,27 +89,51 @@ int main(int argc, char* argv[]) {
             obstacle::spawnObs(deltaTime, ninja.getOnTheLeft());
             obstacle::obsRun(deltaTime, score);
 
+            bool checkVacham = false;
             //kiem tra va cham giua ninja va obs
             SDL_Rect ninjaRect = ninja.getRect();
-            for (const auto& obs : obstacle::getObstacles()) { // &obs de chinh sua vao obs cua obstacles chu ko phai tao 1 ban sao
-                SDL_Rect obsRect = obs.getRect();
+            for (auto it = obstacle::getObstacles().begin(); it != obstacle::getObstacles().end();) { // &obs de chinh sua vao obs cua obstacles chu ko phai tao 1 ban sao
+                SDL_Rect obsRect = it->getRect();
                 if (SDL_HasIntersection(&ninjaRect, &obsRect)) {
-                    if (obs.getType() == obstacleType::ROPE) {
+                    if (it->getType() == obstacleType::ROPE) {
+                        it++;
                         continue;
                     }
-                    state = GAME_OVER;
-                    Mix_PlayChannel(-1, fallSound, 0);
+                    if (it->getType() == obstacleType::BIRD) {
+                        if (jumping) {
+                            Mix_PlayChannel(-1, hitSound, 0);
+                            it = obstacle::getObstacles().erase(it);
+                            continue;
+                        }
+                    }
+                    checkVacham = true;
+                    break;
+                }
+                else {
+                    it++;
                 }
             }
 
 			//kiem tra va cham giua ninja va squirrel
-			for (const auto& squirrel : obstacle::getSquirrels()) {
-				SDL_Rect squirrelRect = squirrel.getRect();
-				if (SDL_HasIntersection(&ninjaRect, &squirrelRect)) {
-					state = GAME_OVER;
-					Mix_PlayChannel(-1, fallSound, 0);
-				}
-			}
+            for (auto it = obstacle::getSquirrels().begin(); it != obstacle::getSquirrels().end(); ) {
+                SDL_Rect squirrelRect = it->getRect();
+                if (SDL_HasIntersection(&ninjaRect, &squirrelRect)) {
+                    if (jumping) {
+                        Mix_PlayChannel(-1, hitSound, 0);
+                        it = obstacle::getSquirrels().erase(it); // xoa squirrel khoi danh sach
+                        continue;
+                    }
+                    checkVacham = true;
+                    break;
+                }
+                else {
+                    ++it;
+                }
+            }
+            if (checkVacham) {
+                state = GAME_OVER;
+                Mix_PlayChannel(-1, fallSound, 0);
+            }
 
             // ve ingame back
             renderIngameText(renderer, ingameTexture,deltaTime);
@@ -142,6 +169,7 @@ int main(int argc, char* argv[]) {
                     int mouseX = e.button.x;
                     int mouseY = e.button.y;
                     if (tryAgainButton.isClicked(mouseX, mouseY)) {
+                        Mix_PlayChannel(-1, clickSound, 0);
                         score = 0;
                         obstacle::SPEED = 200.0;
                         state = PLAYING;
@@ -157,6 +185,10 @@ int main(int argc, char* argv[]) {
 
                         break; // thoat vong lap gameover de tiep tuc choi
                     }
+                    else if (menuButton.isClicked(mouseX, mouseY)) {
+                        Mix_PlayChannel(-1, clickSound, 0);
+                        state = MENU;
+                    }
                 }
             }
 
@@ -168,9 +200,53 @@ int main(int argc, char* argv[]) {
             SDL_RenderCopy(renderer, gameOverPanel, NULL, &gameOverRect);
 
             tryAgainButton.render(renderer);
-
+            menuButton.render(renderer);
             std::string scoreText = "Score: " + std::to_string(score);
             renderText(renderer, scoreText, 150, 130,true);
+
+            SDL_RenderPresent(renderer);
+        }
+        while (state == MENU) {
+            SDL_Event e;
+            while (SDL_PollEvent(&e)) {
+                if (e.type == SDL_QUIT) {
+                    running = false;
+                    return 0;
+                }
+                if (e.type == SDL_MOUSEBUTTONDOWN) {
+                    int mouseX = e.button.x;
+                    int mouseY = e.button.y;
+                    if (playButton.isClicked(mouseX, mouseY)) {
+                        Mix_PlayChannel(-1, clickSound, 0);
+                        state = PLAYING;
+                    }
+                    else if (exitButton.isClicked(mouseX, mouseY)) {
+                        Mix_PlayChannel(-1, clickSound, 0);
+                        running = false;
+                        return 0;
+                    }
+                }
+
+            }
+            //reset trang thai game
+            score = 0;
+            obstacle::SPEED = 200.0;
+            ninja = { WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE };
+            obstacle::getObstacles().clear();
+            obstacle::getSquirrels().clear();
+            obstacle::birdExists = false;
+            obstacle::squirrelExists = false;
+            jumping = false;
+            lastTime = SDL_GetTicks();// tranh xung dot thoi gian, vat can sinh ra trc khi restart
+            SDL_Delay(100); //tranh xung dot
+
+            //in background menu
+            SDL_Rect dstRect = { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT };
+            SDL_RenderCopy(renderer, menuTexture, NULL, &dstRect);
+
+            //ve nut 
+            playButton.render(renderer);
+            exitButton.render(renderer);
 
             SDL_RenderPresent(renderer);
         }
@@ -183,3 +259,8 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
+void loadAllTextures(SDL_Renderer* renderer) {
+    obstacle::loadTextures(renderer); // tai hinh anh obs
+    ninja::loadTextures(renderer); // tai hinh anh ninja
+    loadCommonTexture(renderer); // tai hinh anh nen
+}

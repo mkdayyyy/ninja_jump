@@ -10,7 +10,7 @@ public:
 	void handleInput(SDL_Event& e, bool& jumping); // quan li dau vao
 	bool getOnTheLeft() const; // lay bool onTheLeft de su dung
 	void render(SDL_Renderer* renderer, bool jumping); // in animation ninja
-	
+	int getX() const;  // lay toa do x cua ninja
 	static void loadTextures(SDL_Renderer* renderer); // lay hinh anh ninja
 	void animate(bool jumping); //chuyen frame
 

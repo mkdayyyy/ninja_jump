@@ -100,3 +100,7 @@ void ninja::animate(bool jumping) {
 		count = 0;
 	}
 }
+
+int ninja::getX() const {
+	return x;
+}

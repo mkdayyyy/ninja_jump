@@ -120,12 +120,6 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 			width = 30;
 			height = 81;
 			break;
-		//case obstacleType::SQUIRREL:
-		//	spawnX = (rand() % 2 == 0) ? 100 : (WINDOW_WIDTH - WALL_WIDTH - 35); // random xuat hien trai hoac phai
-		//	width = 35;
-		//	height = 19;
-		//	spawnY = -height;
-		//	break;
 		case obstacleType::BIRD:
 			if (birdExists) return;
 			spawnX = (rand() % 2 == 0) ? WALL_WIDTH : (WINDOW_WIDTH - WALL_WIDTH - 35); // random xuat hien trai hoac phai
