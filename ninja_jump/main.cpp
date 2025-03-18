@@ -103,6 +103,7 @@ int main(int argc, char* argv[]) {
                         if (jumping) {
                             Mix_PlayChannel(-1, hitSound, 0);
                             it = obstacle::getObstacles().erase(it);
+                            obstacle::birdExists = false;
                             continue;
                         }
                     }
@@ -121,6 +122,7 @@ int main(int argc, char* argv[]) {
                     if (jumping) {
                         Mix_PlayChannel(-1, hitSound, 0);
                         it = obstacle::getSquirrels().erase(it); // xoa squirrel khoi danh sach
+                        obstacle::squirrelExists = false;
                         continue;
                     }
                     checkVacham = true;
