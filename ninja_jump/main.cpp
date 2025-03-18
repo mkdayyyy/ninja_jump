@@ -7,10 +7,14 @@
 int main(int argc, char* argv[]) {
     initSDL();
     SDL_Window* window = createWindow();
+
     SDL_Renderer* renderer=createRenderer(window);
     obstacle::loadTextures(renderer); // tai hinh anh obs
     ninja::loadTextures(renderer); // tai hinh anh ninja
     loadCommonTexture(renderer); // tai hinh anh nen
+    button playButton(WINDOW_WIDTH / 2 - 50, 250, 100, 50, "res/button/but_play.png", renderer);
+    button exitButton(WINDOW_WIDTH / 2 - 50, 320, 100, 50, "res/button/but_exit.png", renderer);
+    button tryAgainButton(175, 270, 130, 50, "res/button/but_try.png", renderer);
 
     //quan li game
     bool running = true;
@@ -36,31 +40,25 @@ int main(int argc, char* argv[]) {
                 return 0;
             }
             if (e.type == SDL_MOUSEBUTTONDOWN) {
-                state = handleMenuClick(e.button.x, e.button.y, running);
+                int mouseX = e.button.x;
+                int mouseY = e.button.y;
+                if (playButton.isClicked(mouseX, mouseY)) {
+                    state = PLAYING;
+                }
+                else if (exitButton.isClicked(mouseX, mouseY)) {
+                    running = false;
+                    return 0;
+                }
             }
         }
-
-        // in menu
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
 
         //in background menu
         SDL_Rect dstRect = { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT };
         SDL_RenderCopy(renderer, menuTexture, NULL, &dstRect);
 
-        //ve nut play
-        SDL_SetRenderDrawColor(renderer,0, 0, 255, 255);
-        std::string play = "Play";
-        SDL_RenderFillRect(renderer, &playBut.rectBut);
-        renderText(renderer, play, playBut.rectBut.x + 30, playBut.rectBut.y + 15,true);
-
-        //ve nut quit
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        SDL_RenderFillRect(renderer, &quitBut.rectBut);
-        std::string quit = "Quit";
-        renderText(renderer,quit, quitBut.rectBut.x + 30, quitBut.rectBut.y + 15,true);
-
-        
+        //ve nut 
+        playButton.render(renderer);
+        exitButton.render(renderer);
 
         SDL_RenderPresent(renderer);
     }
@@ -109,16 +107,11 @@ int main(int argc, char* argv[]) {
 					Mix_PlayChannel(-1, fallSound, 0);
 				}
 			}
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderClear(renderer);
 
             // ve ingame back
-            SDL_Rect dstRect = { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT };
-            SDL_RenderCopy(renderer, ingameTexture, &dstRect, NULL);
+            renderIngameText(renderer, ingameTexture,deltaTime);
 
-            //ve ninja, sau nay chen anh
-            /*SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-            SDL_RenderFillRect(renderer, &ninjaRect);*/
+            //ve ninja
             ninja.render(renderer, jumping);
 
             //ve obstacle
@@ -131,6 +124,8 @@ int main(int argc, char* argv[]) {
             }
             //in bang diem
             std::string scoreText = "Score: " + std::to_string(score);
+            SDL_Rect scoreBar = { 145,15,200,50 };
+            SDL_RenderCopy(renderer, scorebar, NULL, &scoreBar);
             renderText(renderer, scoreText, 180, 20,true);
 
             SDL_RenderPresent(renderer);
@@ -143,33 +138,39 @@ int main(int argc, char* argv[]) {
                     running = false;
                     return 0; // Thoat game hoan toan
                 }
-                if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r) {
-                    score = 0;
-                    obstacle::SPEED = 200.0;
-                    state = PLAYING;
-                    ninja = { WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE };
-                    obstacle::getObstacles().clear();
-                    obstacle::getSquirrels().clear();
-                    obstacle::birdExists = false;
-                    obstacle::squirrelExists = false;
-                    jumping = false;
-                    lastTime = SDL_GetTicks();// tranh xung dot thoi gian, vat can sinh ra trc khi restart
-                    SDL_Delay(100); //tranh xung dot
-                    Mix_PlayChannel(-1, gameOverSound, 0);  
+                if (e.type == SDL_MOUSEBUTTONDOWN) {
+                    int mouseX = e.button.x;
+                    int mouseY = e.button.y;
+                    if (tryAgainButton.isClicked(mouseX, mouseY)) {
+                        score = 0;
+                        obstacle::SPEED = 200.0;
+                        state = PLAYING;
+                        ninja = { WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE };
+                        obstacle::getObstacles().clear();
+                        obstacle::getSquirrels().clear();
+                        obstacle::birdExists = false;
+                        obstacle::squirrelExists = false;
+                        jumping = false;
+                        lastTime = SDL_GetTicks();// tranh xung dot thoi gian, vat can sinh ra trc khi restart
+                        SDL_Delay(100); //tranh xung dot
+                        Mix_PlayChannel(-1, gameOverSound, 0);
 
-                    break; // thoat vong lap gameover de tiep tuc choi
+                        break; // thoat vong lap gameover de tiep tuc choi
+                    }
                 }
             }
 
             //hien thi man hinh gameover
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderClear(renderer);
+            SDL_Rect gameOverBackRect = { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT };
+            SDL_RenderCopy(renderer, gameOverBack, NULL, &gameOverBackRect);
 
-            std::string restartText = "Game Over! Press R to Restart";
-            renderText(renderer,restartText , 30, 250,true);
+            SDL_Rect gameOverRect = { 65,100,350,350 };
+            SDL_RenderCopy(renderer, gameOverPanel, NULL, &gameOverRect);
+
+            tryAgainButton.render(renderer);
 
             std::string scoreText = "Score: " + std::to_string(score);
-            renderText(renderer, scoreText, 200, 300,true);
+            renderText(renderer, scoreText, 150, 130,true);
 
             SDL_RenderPresent(renderer);
         }

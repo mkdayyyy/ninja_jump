@@ -76,7 +76,7 @@ void ninja::loadTextures(SDL_Renderer* renderer) {
 
 void ninja::render(SDL_Renderer* renderer, bool jumping) {
 	SDL_Rect dstRect;
-	SDL_RendererFlip flip = onTheLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+	SDL_RendererFlip flip = onTheLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;;
 	if (jumping) {
 		dstRect = { x,y,88,62 };
 		SDL_RenderCopyEx(renderer, ninjaJumpTextures[frameIndex], NULL, &dstRect, 0, NULL, flip);

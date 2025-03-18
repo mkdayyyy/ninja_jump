@@ -10,6 +10,15 @@ Mix_Chunk* landSound = NULL;
 
 SDL_Texture* menuTexture = nullptr;
 SDL_Texture* ingameTexture = nullptr;
+SDL_Texture* scorebar = nullptr;
+SDL_Texture* playPic = nullptr;
+SDL_Texture* exitPic = nullptr;
+SDL_Texture* gameOverPanel = nullptr;
+SDL_Texture* tryAgainPic = nullptr;
+SDL_Texture* gameOverBack = nullptr;
+
+
+float bgY = 568;
 
 void initSDL() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -86,7 +95,7 @@ void destroySDL() {
 }
 
 void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool centerX) {
-    SDL_Color textColor = { 255,255,255,255 };
+    SDL_Color textColor = { 0,0,0,255 };
     SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), textColor);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
@@ -106,15 +115,7 @@ void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool cen
 SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer) {
     SDL_Texture* newTexture = nullptr;
     SDL_Surface* loadedSurface = IMG_Load(path.c_str());
-    if (!loadedSurface) {
-        printf("IMG_Load failed for %s: %s\n", path.c_str(), IMG_GetError());
-        return nullptr;
-    }
-
     newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
-    if (!newTexture) {
-        printf("SDL_CreateTextureFromSurface failed for %s: %s\n", path.c_str(), SDL_GetError());
-    }
     SDL_FreeSurface(loadedSurface);
     return newTexture;
 }
@@ -122,7 +123,19 @@ SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer) {
 void loadCommonTexture(SDL_Renderer* renderer) {
     menuTexture = loadTexture("res/menu/back.png", renderer);
     ingameTexture = loadTexture("res/background/back1.png", renderer);
-    if (!menuTexture) {
-        printf("Failed to load menu texture: %s\n", SDL_GetError());
+    scorebar = loadTexture("res/button/scorebar.png", renderer);
+    gameOverPanel = loadTexture("res/menu/gameover_panel.png", renderer);
+    gameOverBack = loadTexture("res/menu/back2.png", renderer);
+
+}
+
+void renderIngameText(SDL_Renderer* renderer, SDL_Texture* ingameTexture,float deltaTime) {
+    bgY -= obstacle::SPEED * deltaTime;
+
+    if (bgY <=100) {
+        bgY = 568;
     }
+    SDL_Rect rectBg = { 0,bgY,WINDOW_WIDTH,WINDOW_HEIGHT };
+    SDL_RenderCopy(renderer, ingameTexture, &rectBg, NULL);
+
 }

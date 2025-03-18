@@ -40,8 +40,11 @@ static enum GameState { MENU, PLAYING, GAME_OVER }; // quan li trang thai game
 static bool gameReset = false; // reset game moi khi an vao play
 extern SDL_Texture* menuTexture; // hinh anh menu background
 extern SDL_Texture* ingameTexture; // hinh anh background khi chay game
+extern SDL_Texture* scorebar; // hinh anh scoreBar
+extern SDL_Texture* gameOverPanel; // panel trong gameover
+extern SDL_Texture* gameOverBack; // background gameover
 
-
+extern float bgY; // 
 
 void initSDL(); //kiem tra init
 SDL_Window* createWindow(); //kiem tra tao window
@@ -52,5 +55,5 @@ void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool cen
 SDL_Texture* loadTexture(const std::string& file,SDL_Renderer* renderer); //tai hinh anh
 void loadCommonTexture(SDL_Renderer* renderer);
 //void renderText(SDL_Renderer* renderer);
-
+void renderIngameText(SDL_Renderer* renderer, SDL_Texture* ingameTexture,float deltaTime);
 #endif
