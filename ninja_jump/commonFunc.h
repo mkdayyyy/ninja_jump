@@ -14,6 +14,7 @@
 #include "obstacle.h"
 #include "ninja.h"
 
+
 static SDL_Window* window = NULL;  // khoi tao window
 static SDL_Renderer* renderer = NULL; //tao renderer
 static TTF_Font* font = NULL; //them font cho van ban
