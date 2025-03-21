@@ -37,13 +37,15 @@ extern Mix_Chunk* fallSound; // am thanh khi nga
 extern Mix_Music* backgroundMusic; // am thanh nen
 extern Mix_Chunk* clickSound; // am thanh khi click
 extern Mix_Chunk* landSound; // am thanh khi dap dat
-static enum GameState { MENU, PLAYING, GAME_OVER }; // quan li trang thai game
+static enum GameState { MENU, PLAYING, GAME_OVER, PAUSE, OPTION }; // quan li trang thai game
 static bool gameReset = false; // reset game moi khi an vao play
 extern SDL_Texture* menuTexture; // hinh anh menu background
 extern SDL_Texture* ingameTexture; // hinh anh background khi chay game
 extern SDL_Texture* scorebar; // hinh anh scoreBar
 extern SDL_Texture* gameOverPanel; // panel trong gameover
 extern SDL_Texture* gameOverBack; // background gameover
+extern SDL_Texture* pauseMenu; //menu pause game
+extern SDL_Texture* offSlash; // dau gach do
 
 extern float bgY; // 
 

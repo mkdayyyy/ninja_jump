@@ -16,7 +16,8 @@ SDL_Texture* exitPic = nullptr;
 SDL_Texture* gameOverPanel = nullptr;
 SDL_Texture* tryAgainPic = nullptr;
 SDL_Texture* gameOverBack = nullptr;
-
+SDL_Texture* pauseMenu = nullptr;
+SDL_Texture* offSlash = nullptr;
 
 float bgY = 568;
 
@@ -126,6 +127,8 @@ void loadCommonTexture(SDL_Renderer* renderer) {
     scorebar = loadTexture("res/button/scorebar.png", renderer);
     gameOverPanel = loadTexture("res/menu/gameover_panel.png", renderer);
     gameOverBack = loadTexture("res/menu/back2.png", renderer);
+    pauseMenu = loadTexture("res/menu/PAUSEMENU.png", renderer);
+    offSlash = loadTexture("res/menu/off_slash.png", renderer);
 
 }
 
