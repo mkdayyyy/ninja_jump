@@ -10,3 +10,4 @@ private:
 	SDL_Rect rect; // khung button
 	SDL_Texture* texture;
 };
+

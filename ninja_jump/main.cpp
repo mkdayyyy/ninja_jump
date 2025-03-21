@@ -5,6 +5,7 @@
 #include "LTexture.h"
 
 void loadAllTextures(SDL_Renderer* renderer);
+void resetGame(int& score, ninja& ninja, bool& jumping, Uint32& lastTime);
 
 int main(int argc, char* argv[]) {
     initSDL();
@@ -86,17 +87,8 @@ int main(int argc, char* argv[]) {
                     int mouseY = e.button.y;
                     if (tryAgainButton.isClicked(mouseX, mouseY)) {
                         Mix_PlayChannel(-1, clickSound, 0);
-                        score = 0;
-                        obstacle::SPEED = 200.0;
+                        resetGame(score, ninja, jumping, lastTime);
                         state = PLAYING;
-                        ninja = { WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE };
-                        obstacle::getObstacles().clear();
-                        obstacle::getSquirrels().clear();
-                        obstacle::birdExists = false;
-                        obstacle::squirrelExists = false;
-                        jumping = false;
-                        lastTime = SDL_GetTicks(); 
-                        SDL_Delay(100); 
                         Mix_PlayChannel(-1, gameOverSound, 0);
                     }
                     else if (menuButton.isClicked(mouseX, mouseY)) {
@@ -147,17 +139,7 @@ int main(int argc, char* argv[]) {
                     }
                     if (restartButton.isClicked(mouseX, mouseY)) {
                         Mix_PlayChannel(-1, clickSound, 0);
-                        score = 0;
-                        obstacle::SPEED = 200.0;
-                        state = PLAYING;
-                        ninja = { WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE };
-                        obstacle::getObstacles().clear();
-                        obstacle::getSquirrels().clear();
-                        obstacle::birdExists = false;
-                        obstacle::squirrelExists = false;
-                        jumping = false;
-                        lastTime = SDL_GetTicks(); 
-                        SDL_Delay(100); 
+                        resetGame(score, ninja, jumping, lastTime);
                         state = PLAYING;
                     }
                     if (continueButton.isClicked(mouseX, mouseY)) {
@@ -344,4 +326,17 @@ void loadAllTextures(SDL_Renderer* renderer) {
     obstacle::loadTextures(renderer); // tai hinh anh obs
     ninja::loadTextures(renderer); // tai hinh anh ninja
     loadCommonTexture(renderer); // tai hinh anh nen
+}
+
+void resetGame(int& score, ninja& ninja, bool& jumping, Uint32& lastTime) {
+    score = 0;
+    obstacle::SPEED = 200.0;
+    ninja = { WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE };
+    obstacle::getObstacles().clear();
+    obstacle::getSquirrels().clear();
+    obstacle::birdExists = false;
+    obstacle::squirrelExists = false;
+    jumping = false;
+    lastTime = SDL_GetTicks();
+    SDL_Delay(100);
 }
