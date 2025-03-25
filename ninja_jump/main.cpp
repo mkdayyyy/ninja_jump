@@ -237,6 +237,12 @@ int main(int argc, char* argv[]) {
                         obstacle::squirrelExists = false;
                         continue;
                     }
+                    if (shieldActive) {
+                        Mix_PlayChannel(-1, thudSound, 0);
+                        it = obstacle::getObstacles().erase(it);
+                        shieldActive = false;
+                        continue;
+                    }
                     checkVacham = true;
                     break;
                 }
