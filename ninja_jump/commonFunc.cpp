@@ -7,6 +7,8 @@ Mix_Chunk* fallSound = NULL;
 Mix_Chunk* clickSound = NULL;
 Mix_Music* backgroundMusic = NULL;
 Mix_Chunk* landSound = NULL;
+Mix_Chunk* powerupSound = NULL;
+Mix_Chunk* thudSound = NULL;
 
 SDL_Texture* menuTexture = nullptr;
 SDL_Texture* ingameTexture = nullptr;
@@ -49,6 +51,8 @@ void initSDL() {
     gameOverSound = Mix_LoadWAV("res/sound/gameover.wav");
     clickSound = Mix_LoadWAV("res/sound/click.wav");
     landSound = Mix_LoadWAV("res/sound/land.wav");
+    thudSound = Mix_LoadWAV("res/sound/thud.wav");
+    powerupSound = Mix_LoadWAV("res/sound/power-up.wav");
 
     //load am nhac
     backgroundMusic = Mix_LoadMUS("res/sound/music.ogg");

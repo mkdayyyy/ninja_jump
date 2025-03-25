@@ -5,6 +5,7 @@ float obstacle::SPEED = 200.0;
 std::vector<obstacle> obstacle::obstacles;
 std::vector<obstacle> obstacle::squirrels;
 float obstacle::spawnTime = 0.0;
+float obstacle::shieldSpawnTime = 0.0;
 
 bool obstacle::birdExists = false;
 bool obstacle::squirrelExists = false;
@@ -13,6 +14,7 @@ SDL_Texture* obstacle::ropeTexture = nullptr;
 SDL_Texture* obstacle::leftHouseTexture = nullptr;
 SDL_Texture* obstacle::rightHouseTexture = nullptr;
 SDL_Texture* obstacle::spikeTexture = nullptr;
+SDL_Texture* obstacle::shieldTexture = nullptr;
 SDL_Texture* obstacle::squirrelTextures[4] = { nullptr, nullptr, nullptr, nullptr };
 SDL_Texture* obstacle::birdTextures[3] = { nullptr, nullptr, nullptr };
 
@@ -88,7 +90,8 @@ int obstacle::getY() const{
 
 void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 	spawnTime += deltaTime;
-	if (spawnTime >= OBSTACLE_SPAWN_TIME) {
+	shieldSpawnTime += deltaTime;
+	if (spawnTime >= OBSTACLE_SPAWN_TIME && shieldSpawnTime<20) {
 		int randType = rand() % 5; // random loai vat can
 		//int randType = 6;
 		obstacleType type = static_cast<obstacleType>(randType);
@@ -116,7 +119,7 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 			break;
 		case obstacleType::SPIKE:
 			spawnX = WALL_WIDTH;
-			spawnY = -81; // spawnY am tai vi muon xuat hien bat ngo 
+			spawnY = -40; // spawnY am tai vi muon xuat hien bat ngo 
 			width = 30;
 			height = 81;
 			break;
@@ -129,7 +132,6 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 			birdExists = true;
 			break;
 		}
-
 		obstacles.push_back(obstacle(spawnX, -spawnY, width, height, type));
 		spawnTime = 0.0;
 
@@ -138,6 +140,17 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 			squirrels.push_back(obstacle(spawnX + 50, -spawnY, 35, 19, obstacleType::SQUIRREL));
 			squirrelExists = true;
 		}
+	}
+	else if (shieldSpawnTime >= 20) {
+		obstacleType type = obstacleType::SHIELD;
+		int spawnX, spawnY, width, height;
+		spawnX = (rand() % 2 == 0) ? WALL_WIDTH : (WINDOW_WIDTH - WALL_WIDTH - 50); // random xuat hien trai hoac phai
+		width = 50;
+		height = 50;
+		spawnY = 50;
+		obstacles.push_back(obstacle(spawnX, -spawnY, width, height, type));
+		spawnTime = 0.0;
+		shieldSpawnTime = 0.0;
 	}
 }
 
@@ -192,6 +205,7 @@ void obstacle::loadTextures(SDL_Renderer* renderer) {
 	leftHouseTexture = loadTexture("res/obstacles/houses/b1.png", renderer);
 	rightHouseTexture = loadTexture("res/obstacles/houses/b2.png", renderer);
 	spikeTexture = loadTexture("res/obstacles/spike/spikes.png", renderer);
+	shieldTexture = loadTexture("res/shield/shield.png", renderer);
 
 	//vat can co animation
 	squirrelTextures[0] = loadTexture("res/obstacles/squirrels/SQ1.png", renderer);
@@ -236,6 +250,8 @@ void obstacle::render(SDL_Renderer* renderer) {
 		flip = movingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 		SDL_RenderCopyEx(renderer, currentTexture, NULL, &dstRect, 0, NULL, flip);
 		break;
+	case obstacleType::SHIELD:
+		SDL_RenderCopy(renderer, shieldTexture, NULL, &dstRect);
 	}
 }
 
@@ -258,5 +274,11 @@ void obstacle::animate() {
 	}
 	else if (type == obstacleType::BIRD) {
 		currentTexture = birdTextures[frameIndex];
+	}
+}
+
+void obstacle::checkShield(bool& shieldActive, Uint32 currentTime,Uint32 shieldStartTime) {
+	if (shieldActive && currentTime - shieldStartTime >= 8000) {
+		shieldActive = false;
 	}
 }

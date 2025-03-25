@@ -30,6 +30,8 @@ int main(int argc, char* argv[]) {
     bool playMusic = true;
     bool playSound = true;
     bool jumping = false;
+    bool shieldActive = false;
+    Uint32 shieldStartTime = 0;
     int score = 0;
 	Mix_Volume(-1, MIX_MAX_VOLUME / 3); // am thanh hieu ung
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 10); // am thanh nen
@@ -47,6 +49,9 @@ int main(int argc, char* argv[]) {
         Uint32 currentTime = SDL_GetTicks();
         float deltaTime = (currentTime - lastTime) / 1000.0; // doi sang giay
         lastTime = currentTime;
+
+        //kiem tra thoi gian khien hoat dong
+        obstacle::checkShield(shieldActive, currentTime,shieldStartTime);
 
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
@@ -140,10 +145,11 @@ int main(int argc, char* argv[]) {
                     if (restartButton.isClicked(mouseX, mouseY)) {
                         Mix_PlayChannel(-1, clickSound, 0);
                         resetGame(score, ninja, jumping, lastTime);
+                        Mix_PlayChannel(-1, gameOverSound, 0);
                         state = PLAYING;
                     }
                     if (continueButton.isClicked(mouseX, mouseY)) {
-                        Mix_PlayChannel(-1, gameOverSound, 0);
+                        Mix_PlayChannel(-1, clickSound, 0);
                         state = PLAYING;
                     }
                 }
@@ -200,6 +206,19 @@ int main(int argc, char* argv[]) {
                             continue;
                         }
                     }
+                    if (it->getType() == obstacleType::SHIELD) {
+                        Mix_PlayChannel(-1, powerupSound, 0);
+                        it = obstacle::getObstacles().erase(it);
+                        shieldActive = true;
+                        shieldStartTime = currentTime;
+                        continue;
+                    }
+                    if (shieldActive) {
+                        Mix_PlayChannel(-1, thudSound, 0);
+                        it = obstacle::getObstacles().erase(it);
+                        shieldActive = false;
+                        continue;
+                    }
                     checkVacham = true;
                     break;
                 }
@@ -234,7 +253,7 @@ int main(int argc, char* argv[]) {
             renderIngameText(renderer, ingameTexture,deltaTime);
 
             //ve ninja
-            ninja.render(renderer, jumping);
+            ninja.render(renderer, jumping, shieldActive);
 
             //ve obstacle
             for (auto& obs : obstacle::getObstacles()) {
@@ -338,5 +357,5 @@ void resetGame(int& score, ninja& ninja, bool& jumping, Uint32& lastTime) {
     obstacle::squirrelExists = false;
     jumping = false;
     lastTime = SDL_GetTicks();
-    SDL_Delay(100);
+    SDL_Delay(100); // tranh xung dot game 
 }

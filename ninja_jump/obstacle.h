@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include "commonFunc.h"
 
-enum obstacleType { ROPE, LEFTHOUSE, RIGHTHOUSE, SPIKE, BIRD, SQUIRREL}; // loai vat can
+enum obstacleType { ROPE, LEFTHOUSE, RIGHTHOUSE, SPIKE, BIRD, SQUIRREL,SHIELD}; // loai vat can
 
 class obstacle {
 public:
@@ -14,6 +14,7 @@ public:
 	int getY() const; // lay vi tri y cua vat can
 	void render(SDL_Renderer* renderer); // in obs
 	obstacleType getType() const { return type; } // lay loai vat can
+	static void checkShield(bool& shieldActive, Uint32 currentTime,Uint32 shieldStartTime);
 
 	//quan li vat can (dùng stactic vì mấy hàm này ko liên qua đến class obs mà là quản lí các obs )
 	static void spawnObs(float deltaTime, bool onTheLeft); // tao vat can
@@ -27,9 +28,7 @@ public:
 	static const int OBSTACLE_SIZE; // size cua vat can
 	static bool birdExists; // theo doi bird in ra hay chua
 	static bool squirrelExists; // theo doi squirrel in ra hay chua
-
 	void animate(); // chuyen frame
-
 
 private:
 	int x;
@@ -44,13 +43,16 @@ private:
 	float freezeTime = 0.0; // kiem tra bird dung yen dc bao lau
 	bool movingDown = false; // kiem tra huong cua bird
 
+	static float shieldSpawnTime;
+
 	static std::vector<obstacle> obstacles; // danh sach vat can
 	static std::vector<obstacle> squirrels; // danh sach squirrel
 
 	static SDL_Texture* ropeTexture; // hinh anh vat can rope
 	static SDL_Texture* leftHouseTexture; // hinh anh vat can left house
 	static SDL_Texture* rightHouseTexture; // hinh anh vat can right house
-	static SDL_Texture* spikeTexture; // hinh anh vat can spike
+	static SDL_Texture* spikeTexture; // hinh anh vat can spikes
+	static SDL_Texture* shieldTexture; // hinh anh power-up shield
 
 	int frameIndex = 0; // chi so frame hien tai
 	int animationSpeed = 6;  // toc do animation

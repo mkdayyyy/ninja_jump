@@ -37,6 +37,8 @@ extern Mix_Chunk* fallSound; // am thanh khi nga
 extern Mix_Music* backgroundMusic; // am thanh nen
 extern Mix_Chunk* clickSound; // am thanh khi click
 extern Mix_Chunk* landSound; // am thanh khi dap dat
+extern Mix_Chunk* thudSound; // am thanh khi va cham obs
+extern Mix_Chunk* powerupSound; // am thanh khi dc power up
 static enum GameState { MENU, PLAYING, GAME_OVER, PAUSE, OPTION }; // quan li trang thai game
 static bool gameReset = false; // reset game moi khi an vao play
 extern SDL_Texture* menuTexture; // hinh anh menu background
