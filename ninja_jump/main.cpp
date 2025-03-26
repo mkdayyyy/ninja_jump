@@ -292,7 +292,7 @@ int main(int argc, char* argv[]) {
 
             tryAgainButton.render(renderer);
             menuButton.render(renderer);
-            std::string scoreText = "Score: " + std::to_string(score);
+            std::string scoreText = "Score:" + std::to_string(score);
             renderText(renderer, scoreText, 150, 130,true);
 
             SDL_RenderPresent(renderer);

@@ -104,10 +104,10 @@ void ninja::render(SDL_Renderer* renderer, bool jumping,bool shieldActive) {
 	else {
 		dstRect = { x, y, 30, 60 };
 		if (shieldActive) {
-			int newW = 70, newH = 100;
+			int newW = 80, newH = 90;
 			int newX = onTheLeft ? x-(newW - 30) / 2 : x-(newW - 30) / 2;
 			int newY = y - (newH - 60) / 2;
-			dstRect = { newX, newY, 70, 100 };
+			dstRect = { newX, newY, newW, newH };
 			SDL_RenderCopyEx(renderer, ninjaRunShield[frameIndex], NULL, &dstRect, 0, NULL, flip);
 		}
 		else {

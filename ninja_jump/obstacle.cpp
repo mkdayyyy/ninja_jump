@@ -118,7 +118,7 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 			height = 31;
 			break;
 		case obstacleType::SPIKE:
-			spawnX = WALL_WIDTH;
+			spawnX = (rand() % 2 == 0) ? WALL_WIDTH : (WINDOW_WIDTH - WALL_WIDTH - 30); // random xuat hien trai hoac phai;
 			spawnY = -40; // spawnY am tai vi muon xuat hien bat ngo 
 			width = 30;
 			height = 81;
@@ -240,7 +240,9 @@ void obstacle::render(SDL_Renderer* renderer) {
 		SDL_RenderCopy(renderer, rightHouseTexture, NULL, &dstRect);
 		break;
 	case obstacleType::SPIKE:
-		SDL_RenderCopy(renderer, spikeTexture, NULL, &dstRect);
+		if (x == WALL_WIDTH) flip = SDL_FLIP_NONE;
+		else flip = SDL_FLIP_HORIZONTAL;
+		SDL_RenderCopyEx(renderer, spikeTexture, NULL, &dstRect, 0, NULL, flip);
 		break;
 	case obstacleType::BIRD:
 		flip = birdMovingRight ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
