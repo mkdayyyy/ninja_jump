@@ -223,6 +223,13 @@ void obstacle::freeTextures() {
 	SDL_DestroyTexture(leftHouseTexture);
 	SDL_DestroyTexture(rightHouseTexture);
 	SDL_DestroyTexture(spikeTexture);
+	SDL_DestroyTexture(shieldTexture);
+	for (int i = 0; i < 4; i++) {
+		SDL_DestroyTexture(squirrelTextures[i]);
+	}
+	for (int i = 0; i < 3; i++) {
+		SDL_DestroyTexture(birdTextures[i]);
+	}
 }
 
 void obstacle::render(SDL_Renderer* renderer) {

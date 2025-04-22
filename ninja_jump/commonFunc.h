@@ -17,7 +17,12 @@
 
 static SDL_Window* window = NULL;  // khoi tao window
 static SDL_Renderer* renderer = NULL; //tao renderer
-static TTF_Font* font = NULL; //them font cho van ban
+//them font cho van ban
+static TTF_Font* fontAzerat = NULL; 
+static TTF_Font* fontAzuk = NULL; 
+static TTF_Font* fontEatin = NULL; 
+static TTF_Font* fontEatinBig = NULL;
+static TTF_Font* fontRoboto = NULL;
 
 //cac bien global
 const int WINDOW_WIDTH = 480; // chieu dai cua window
@@ -48,6 +53,11 @@ extern SDL_Texture* gameOverPanel; // panel trong gameover
 extern SDL_Texture* gameOverBack; // background gameover
 extern SDL_Texture* pauseMenu; //menu pause game
 extern SDL_Texture* offSlash; // dau gach do
+static SDL_Color RED = { 255,0,0,255 };
+static SDL_Color WHITE = { 255,255,255,255 };
+static SDL_Color BLACK = { 0,0,0,255 };
+
+
 
 extern float bgY; // 
 
@@ -56,7 +66,7 @@ SDL_Window* createWindow(); //kiem tra tao window
 SDL_Renderer* createRenderer(SDL_Window* window); //kiem tra tao renderer
 void limitFPS(Uint32 currentTime); //gioi han fps
 void destroySDL(); //giai phong bo nho,sdl
-void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool centerX); //in van ban
+void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool centerX,int fontType, SDL_Color textColor); //in van ban
 SDL_Texture* loadTexture(const std::string& file,SDL_Renderer* renderer); //tai hinh anh
 void loadCommonTexture(SDL_Renderer* renderer);
 //void renderText(SDL_Renderer* renderer);

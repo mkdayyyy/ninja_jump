@@ -33,11 +33,12 @@ void initSDL() {
         printf("Khong khoi tao dc SDL_ttf: %s\n", TTF_GetError());
         exit(1);
     }
-    font = TTF_OpenFont("res/font/AzeretMono-Medium.ttf", 24);
-    if (!font) {
-        printf("Khong tai dc font: %s\n", TTF_GetError());
-        exit(1);
-    }
+    fontAzerat = TTF_OpenFont("res/font/AzeretMono-Medium.ttf", 24);
+    fontAzuk = TTF_OpenFont("res/font/azuk.ttf", 24);
+    fontEatin = TTF_OpenFont("res/font/Good Eatin AOE.ttf", 24);
+    fontEatinBig = TTF_OpenFont("res/font/Good Eatin AOE.ttf", 32);
+    fontRoboto = TTF_OpenFont("res/font/Roboto_SemiCondensed-ExtraBold.ttf", 36);
+
     //khoi tao am thanh
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         printf("Lỗi khởi tạo SDL_mixer: %s\n", Mix_GetError());
@@ -99,9 +100,11 @@ void destroySDL() {
     SDL_Quit();
 }
 
-void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool centerX) {
-    SDL_Color textColor = { 0,0,0,255 };
-    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), textColor);
+void renderText(SDL_Renderer* renderer, std::string& text, int x, int y,bool centerX,int fontType, SDL_Color textColor) {
+    TTF_Font* fontText=nullptr;
+    if (fontType == 1) fontText = fontEatin;
+    else if (fontType == 2) fontText = fontRoboto;
+    SDL_Surface* surface = TTF_RenderText_Solid(fontText, text.c_str(), textColor);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
     SDL_Rect textRect = { x,y,surface->w,surface->h };

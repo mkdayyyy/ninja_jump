@@ -239,7 +239,7 @@ int main(int argc, char* argv[]) {
                     }
                     if (shieldActive) {
                         Mix_PlayChannel(-1, thudSound, 0);
-                        it = obstacle::getObstacles().erase(it);
+                        it = obstacle::getSquirrels().erase(it);
                         shieldActive = false;
                         continue;
                     }
@@ -273,7 +273,7 @@ int main(int argc, char* argv[]) {
             std::string scoreText = "Score: " + std::to_string(score);
             SDL_Rect scoreBar = { 145,15,200,50 };
             SDL_RenderCopy(renderer, scorebar, NULL, &scoreBar);
-            renderText(renderer, scoreText, 180, 20,true);
+            renderText(renderer, scoreText, 180, 20,true,1, BLACK);
 
             //pause
             pauseButton.render(renderer);
@@ -292,8 +292,8 @@ int main(int argc, char* argv[]) {
 
             tryAgainButton.render(renderer);
             menuButton.render(renderer);
-            std::string scoreText = "Score:" + std::to_string(score);
-            renderText(renderer, scoreText, 150, 130,true);
+            std::string scoreText = "Score: " + std::to_string(score);
+            renderText(renderer, scoreText, 150, 130, true, 1, BLACK);
 
             SDL_RenderPresent(renderer);
         }
@@ -311,6 +311,10 @@ int main(int argc, char* argv[]) {
             soundButton.render(renderer);
             musicButton.render(renderer);
             quitButton.render(renderer);
+
+            //in text option
+            std::string optionText = "OPTION";
+            renderText(renderer, optionText, WINDOW_WIDTH / 2 - 50, 165, true, 2,WHITE);
 
             // in hinh anh dau gach do
             SDL_Rect offMusicRect,offSoundRect;
@@ -335,6 +339,10 @@ int main(int argc, char* argv[]) {
             continueButton.render(renderer);
             menuButton.render(renderer);
             restartButton.render(renderer);
+
+            // In text "Pause"
+            std::string pautext = "PAUSE";
+            renderText(renderer, pautext, WINDOW_WIDTH / 2 - 50, 160, true, 2, WHITE);
 
             SDL_RenderPresent(renderer);
         }
