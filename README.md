@@ -50,6 +50,8 @@ ninja_jump/
 
 ## 🎯 Chức năng chính
 
+- **Menu cài đặt** ⚙️: giúp người chơi có thể dễ dàng cài đặt game theo ý thích.
+- **Menu tạm dừng** ⏸️: Khi cần nghỉ tay, lo việc hệ trọng hay... bắt đầu lại cuộc đời 🎭 — bạn hoàn toàn có thể tạm dừng trò chơi. Từ đây, bạn cũng có thể quay lại màn hình chính để điều chỉnh cài đặt hoặc chuẩn bị cho lần chơi tiếp theo một cách thoải mái.
 - **Điều khiển nhân vật** 🕴️: Ninja có thể nhảy để di chuyển trái/phải, với cơ chế vật lý mượt mà.
 - **Chướng ngại vật** 🚧: Trò chơi có đa dạng các chướng ngại vật được thiết kế để thử thách kỹ năng và phản xạ của người chơi. Mỗi loại mang một đặc trưng riêng, khiến hành trình trở nên kịch tính và bất ngờ. Ví dụ như:
   - **Gai nhọn** ✶: Xuất hiện ngẫu nhiên, khiến người chơi phải phản ứng nhanh nếu không muốn "game over".
