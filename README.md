@@ -58,6 +58,7 @@ ninja_jump/
   - **Kẻ địch** 🥷: ném phi tiêu 𖣘 thẳng vào người chơi.
   - **Chim săn mồi** 🐦: Quan sát kỹ di chuyển của người chơi rồi lao tới tấn công chính xác.
   - **Sóc nhanh nhẹn** 🐿️: Di chuyển qua lại với tốc độ cao, buộc người chơi phải căn thời gian thật chuẩn để vượt qua.
+- **Khiên hỗ trợ** 🛡️: giúp cho người chơi **thoát hiểm trong gang tấc** - khi bị tấn công hoặc va chạm với vật cản,khiên có thể bảo vệ người chơi khỏi một lần bị game over. Giúp người chơi có cơ hội thứ hai tiếp tục cuộc hành trình và lập nên kỷ lục mới 🎯 !!!
 - **Hệ thống điểm số** 🏆: Lưu điểm hiện tại và cao nhất của mình.
 - **Đồ họa và âm thanh** 🎵: Hình ảnh 2D sinh động, kết hợp âm thanh các hành động, âm thanh nhạc nền vô cùng vui nhộn.
 
