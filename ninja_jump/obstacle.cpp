@@ -82,7 +82,7 @@ void obstacle::update(float deltaTime) {
 		else if (x == WINDOW_WIDTH - WALL_WIDTH - 50) bladeMovingRight = false;
 		if (bladeMovingRight) x += 2;
 		else x -= 2;
-		y += (SPEED * deltaTime * 2);
+		y += (400 * deltaTime );
 	}
 	else {
 		y += (SPEED * deltaTime);
@@ -103,9 +103,8 @@ void obstacle::spawnObs(float deltaTime,bool onTheLeft) {
 	spawnTime += deltaTime;
 	shieldSpawnTime += deltaTime;
 	if (spawnTime >= OBSTACLE_SPAWN_TIME && shieldSpawnTime<20) {
-		//int randType = rand() % 6; // random loai vat can
-		int randType = 5;
-		//int randType = 6;
+		int randType = rand() % 6; // random loai vat can
+		
 		obstacleType type = static_cast<obstacleType>(randType);
 
 		int spawnX, spawnY,width,height;

@@ -217,6 +217,7 @@ int main(int argc, char* argv[]) {
                     }
                     if (shieldActive) {
                         Mix_PlayChannel(-1, thudSound, 0);
+                        if (it->getType() == obstacleType::BIRD) obstacle::birdExists = false;
                         it = obstacle::getObstacles().erase(it);
                         shieldActive = false;
                         continue;
@@ -236,7 +237,6 @@ int main(int argc, char* argv[]) {
                     if (jumping) {
                         Mix_PlayChannel(-1, hitSound, 0);
                         it = obstacle::getSquirrels().erase(it); // xoa squirrel khoi danh sach
-                        obstacle::squirrelExists = false;
                         continue;
                     }
                     if (shieldActive) {
@@ -245,6 +245,7 @@ int main(int argc, char* argv[]) {
                         shieldActive = false;
                         continue;
                     }
+                    obstacle::squirrelExists = false;
                     checkVacham = true;
                     break;
                 }
