@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include "commonFunc.h"
 
-enum obstacleType { ROPE, LEFTHOUSE, RIGHTHOUSE, SPIKE, BIRD, SQUIRREL,SHIELD}; // loai vat can
+enum obstacleType { ROPE, LEFTHOUSE, RIGHTHOUSE, SPIKE, BIRD, THROWER, SQUIRREL, BLADE, SHIELD}; // loai vat can
 
 class obstacle {
 public:
@@ -23,6 +23,7 @@ public:
 	static void freeTextures(); // giai phong hinh anh obs
 	static std::vector<obstacle>& getObstacles(); // lay danh sach vat can
 	static std::vector<obstacle>& getSquirrels(); // lay danh sach squirrel
+	static std::vector<obstacle>& getBlades(); // lay danh sach blade
 
 	static float SPEED; //speed cua vat can (pixel/s)
 	static const int OBSTACLE_SIZE; // size cua vat can
@@ -39,6 +40,7 @@ private:
 
 	bool movingRight = true; // kiem tra huong cua squirrel 
 	bool birdMovingRight = true;
+	bool bladeMovingRight = true;
 
 	float freezeTime = 0.0; // kiem tra bird dung yen dc bao lau
 	bool movingDown = false; // kiem tra huong cua bird
@@ -47,18 +49,21 @@ private:
 
 	static std::vector<obstacle> obstacles; // danh sach vat can
 	static std::vector<obstacle> squirrels; // danh sach squirrel
+	static std::vector<obstacle> blades; // danh sach blade
 
 	static SDL_Texture* ropeTexture; // hinh anh vat can rope
 	static SDL_Texture* leftHouseTexture; // hinh anh vat can left house
 	static SDL_Texture* rightHouseTexture; // hinh anh vat can right house
 	static SDL_Texture* spikeTexture; // hinh anh vat can spikes
 	static SDL_Texture* shieldTexture; // hinh anh power-up shield
+	static SDL_Texture* throwerTexture; // hinh anh ninja dich
 
 	int frameIndex = 0; // chi so frame hien tai
 	int animationSpeed = 6;  // toc do animation
 	SDL_Texture* currentTexture = nullptr;
 	static SDL_Texture* squirrelTextures[4];  // danh sach frame squirrel
 	static SDL_Texture* birdTextures[3];  // danh sach frame bird
+	static SDL_Texture* bladeTextures[4]; //hinh anh phi tieu
 };
 
 #endif

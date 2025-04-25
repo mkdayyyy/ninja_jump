@@ -252,6 +252,29 @@ int main(int argc, char* argv[]) {
                     ++it;
                 }
             }
+            //kiem tra va cham giua ninja va blade
+            for (auto it = obstacle::getBlades().begin(); it != obstacle::getBlades().end(); ) {
+                SDL_Rect bladeRect = it->getRect();
+                if (SDL_HasIntersection(&ninjaRect, &bladeRect)) {
+                    if (jumping) {
+                        Mix_PlayChannel(-1, hitSound, 0);
+                        it = obstacle::getBlades().erase(it); // xoa blade khoi danh sach
+                        continue;
+                    }
+                    if (shieldActive) {
+                        Mix_PlayChannel(-1, thudSound, 0);
+                        it = obstacle::getBlades().erase(it);
+                        shieldActive = false;
+                        continue;
+                    }
+                    checkVacham = true;
+                    break;
+                }
+                else {
+                    ++it;
+                }
+            }
+
             if (checkVacham) {
                 state = GAME_OVER;
                 Mix_PlayChannel(-1, fallSound, 0);
@@ -270,6 +293,10 @@ int main(int argc, char* argv[]) {
 			//ve squirrel
             for (auto& squirrel : obstacle::getSquirrels()) {
 				squirrel.render(renderer);
+            }
+            //ve blade 
+            for (auto& blade : obstacle::getBlades()) {
+                blade.render(renderer);
             }
             //in bang diem
             std::string scoreText = "Score: " + std::to_string(score);
@@ -375,6 +402,7 @@ void resetGame(int& score, ninja& ninja, bool& jumping, Uint32& lastTime) {
     ninja = { WALL_WIDTH, WINDOW_HEIGHT - NINJA_SIZE };
     obstacle::getObstacles().clear();
     obstacle::getSquirrels().clear();
+    obstacle::getBlades().clear();
     obstacle::birdExists = false;
     obstacle::squirrelExists = false;
     jumping = false;
