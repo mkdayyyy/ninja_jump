@@ -11,6 +11,7 @@
 #include <ctime>
 #include <string>
 #include <algorithm>
+#include <fstream>
 #include "obstacle.h"
 #include "ninja.h"
 
@@ -35,6 +36,8 @@ const float INTRO_DURATION = 0.5; // thoi gian intro
 static float OBSTACLE_SPAWN_TIME = 2; // thoi gian obs spawn 
 const Uint32 TARGET_FPS = 144; //fps
 const Uint32 FRAME_TIME = 1000 / TARGET_FPS; // thoi gian moi khung hinh de dc fps nhu mong muon
+extern int highestScore; // diem ki luc
+
 extern Mix_Chunk* jumpSound; // am thanh nhay
 extern Mix_Chunk* hitSound; // am thanh khi va cham
 extern Mix_Chunk* gameOverSound; // am thanh khi thua game
@@ -71,4 +74,6 @@ SDL_Texture* loadTexture(const std::string& file,SDL_Renderer* renderer); //tai 
 void loadCommonTexture(SDL_Renderer* renderer);
 //void renderText(SDL_Renderer* renderer);
 void renderIngameText(SDL_Renderer* renderer, SDL_Texture* ingameTexture,float deltaTime);
+void loadHighScore(); // load diem cao nhat
+void updateHighScore(int score); // cap nhat diem cao nhat
 #endif

@@ -25,6 +25,8 @@ int main(int argc, char* argv[]) {
     button continueButton(175, 220, 130, 50, "res/button/but_con.png", renderer);
     button restartButton(175, 280, 130, 50, "res/button/but_res.png", renderer);
 
+    loadHighScore();
+
     //quan li game
     bool running = true;
     bool playMusic = true;
@@ -282,7 +284,7 @@ int main(int argc, char* argv[]) {
         }
 
         else if (state == GAME_OVER) {
-    
+            updateHighScore(score);
             //hien thi man hinh gameover
             SDL_Rect gameOverBackRect = { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT };
             SDL_RenderCopy(renderer, gameOverBack, NULL, &gameOverBackRect);
@@ -292,8 +294,14 @@ int main(int argc, char* argv[]) {
 
             tryAgainButton.render(renderer);
             menuButton.render(renderer);
+
+            //in diem hien tai
             std::string scoreText = "Score: " + std::to_string(score);
             renderText(renderer, scoreText, 150, 130, true, 1, BLACK);
+
+            //in diem cao nhat
+            std::string highScoreText = "High Score: " + std::to_string(highestScore);
+            renderText(renderer, highScoreText, 150, 190, true, 1, RED);
 
             SDL_RenderPresent(renderer);
         }

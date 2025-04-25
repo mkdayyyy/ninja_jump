@@ -10,6 +10,8 @@ Mix_Chunk* landSound = NULL;
 Mix_Chunk* powerupSound = NULL;
 Mix_Chunk* thudSound = NULL;
 
+int highestScore = 0;
+
 SDL_Texture* menuTexture = nullptr;
 SDL_Texture* ingameTexture = nullptr;
 SDL_Texture* scorebar = nullptr;
@@ -148,4 +150,23 @@ void renderIngameText(SDL_Renderer* renderer, SDL_Texture* ingameTexture,float d
     SDL_Rect rectBg = { 0,bgY,WINDOW_WIDTH,WINDOW_HEIGHT };
     SDL_RenderCopy(renderer, ingameTexture, &rectBg, NULL);
 
+}
+
+void loadHighScore() {
+    std::ifstream inFile("res/highscore.txt");
+    if (inFile.is_open()) {
+        inFile >> highestScore;
+        inFile.close();
+    }
+}
+
+void updateHighScore(int score) {
+    if (score > highestScore) {
+        highestScore = score;
+        std::ofstream outFile("res/highscore.txt");
+        if (outFile.is_open()) {
+            outFile << highestScore;
+            outFile.close();
+        }
+    }
 }
