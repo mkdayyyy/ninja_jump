@@ -1,6 +1,6 @@
 # Ninja Jump 🥷
 
-![Ninja Jump Banner](res/readme/banner.jpeg)
+![Ninja Jump Banner](ninja_jump/res/readme/banner.jpeg)
 
 **Ninja Jump** là một game platform 2D siêu thú vị, nơi bạn điều khiển một ninja nhanh nhẹn 🏃‍♂️, nhảy qua các platform, né chướng ngại vật ⚡ và thu thập đồng xu 💰 để đạt điểm cao nhất! Với đồ họa vui nhộn 🌈 và lối chơi gây nghiện, game mang đến trải nghiệm giải trí tuyệt vời cho mọi lứa tuổi! 🌟
 
@@ -19,7 +19,7 @@
 
 **Ninja Jump** là một game platform 2D nơi bạn nhập vai một ninja 🥷 vượt qua các platform đầy thử thách. Né tránh cạm bẫy nguy hiểm 🕸️ và sống sót càng lâu càng tốt để đạt kỷ lục! Game có lối chơi đơn giản, đồ họa bắt mắt 🎨, phù hợp cho tất cả mọi lứa tuổi! 🎮
 
-![Gameplay Screenshot](res/readme/gameplay.png)
+![Gameplay Screenshot](ninja_jump/res/readme/gameplay.png)
 
 ---
 
