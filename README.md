@@ -35,12 +35,18 @@ ninja_jump/
 ├── commonFunc.h/.cpp     # Khởi tạo SDL, load tài nguyên, render text, quản lý high score, âm thanh, màu sắc,...
 ├── ninja.h/.cpp          # Class ninja, điều khiển nhân vật, nhảy, hoạt ảnh
 ├── obstacle.h/.cpp       # Class Obstacle, quản lý các loại vật cản như bird, rope, shield,...
-├── button.h/.cpp         # Class button, xử lý các nút như Play, Quit, Pause,...
+├── button.h/.cpp         # Class button, xử lý tương tác các nút như Play, Quit, Pause,...
+├── menu.h/.cpp           # Quản lí vòng lặp game, render các thứ trong menu
+├── buttonManager.h/.cpp  # Quản lí và khởi tạo các button
+└── checkCollision.h/.cpp # Kiểm tra va chạm giữa ninja và các vật cản trong game
+
 ├── res/                  # Thư mục chứa toàn bộ tài nguyên (asset) của game
 │   ├── background/       # Hình nền game
 │   ├── button/           # Hình ảnh các nút bấm
 │   ├── font/             # Font chữ sử dụng để hiển thị điểm, menu,...
 │   ├── menu/             # Hình ảnh giao diện menu, game over,...
+│   ├── obstacles/        # Hình ảnh animation của các vật cản
+│   ├── run/              # Hình ảnh animation của ninja
 │   └── sound/            # Âm thanh: nhạc nền và hiệu ứng
 ├── highscore.txt         # File lưu điểm cao nhất
 └── README.md             # Giới thiệu các thông tin về game
