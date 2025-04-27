@@ -19,6 +19,8 @@
 
 **Ninja Jump** là một game platform 2D nơi bạn nhập vai một ninja 🥷 vượt qua các platform đầy thử thách. Né tránh cạm bẫy nguy hiểm 🕸️ và sống sót càng lâu càng tốt để đạt kỷ lục! Game có lối chơi đơn giản, đồ họa bắt mắt 🎨, phù hợp cho tất cả mọi lứa tuổi! 🎮
 
+Video giới thiệu: [video demo](https://drive.google.com/file/d/1JcydnSKgP7JAvcLRbiX5opiG8vxXOvQe/view?usp=drive_link)
+
 ![Gameplay Screenshot](ninja_jump/res/readme/gameplay.png)
 
 ---
