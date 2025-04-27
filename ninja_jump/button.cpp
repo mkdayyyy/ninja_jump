@@ -1,4 +1,9 @@
-#include "button.h"
+﻿#include "button.h"
+
+button::button() {
+    rect = { 0, 0, 0, 0 };
+    texture = nullptr;
+}
 
 button::button(int x, int y, int w, int h, const std::string& texturePath, SDL_Renderer* renderer) {
     rect = { x, y, w, h };

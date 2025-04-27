@@ -133,17 +133,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="buttonManager.cpp" />
+    <ClCompile Include="checkCollision.cpp" />
     <ClCompile Include="commonFunc.cpp" />
     <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="ninja.cpp" />
     <ClCompile Include="obstacle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="button.h" />
+    <ClInclude Include="buttonManager.h" />
+    <ClInclude Include="checkCollision.h" />
     <ClInclude Include="commonFunc.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="LTexture.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="ninja.h" />
     <ClInclude Include="obstacle.h" />
   </ItemGroup>
